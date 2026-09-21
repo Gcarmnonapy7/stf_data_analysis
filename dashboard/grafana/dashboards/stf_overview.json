@@ -6,6 +6,7 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
   "id": null,
+  "uid": "stf-transparency-overview",
   "links": [],
   "liveNow": false,
   "panels": [
@@ -27,15 +28,16 @@
         "graphMode": "none",
         "justifyMode": "auto"
       },
-      "pluginVersion": "10.0.0",
       "targets": [
         {
           "datasource": { "type": "yesoreyeram-infinity-datasource", "uid": "STF-API" },
           "type": "json",
           "source": "url",
           "url": "http://api:8000/api/v1/analytics/overview",
-          "root_selector": "total_processes",
-          "format": "table"
+          "format": "table",
+          "columns": [
+            { "selector": "total_processes", "text": "Total Processos", "type": "number" }
+          ]
         }
       ]
     },
@@ -55,8 +57,10 @@
           "type": "json",
           "source": "url",
           "url": "http://api:8000/api/v1/analytics/overview",
-          "root_selector": "total_decisions",
-          "format": "table"
+          "format": "table",
+          "columns": [
+            { "selector": "total_decisions", "text": "Total Decisões", "type": "number" }
+          ]
         }
       ]
     },
@@ -76,8 +80,10 @@
           "type": "json",
           "source": "url",
           "url": "http://api:8000/api/v1/analytics/overview",
-          "root_selector": "active_processes",
-          "format": "table"
+          "format": "table",
+          "columns": [
+            { "selector": "active_processes", "text": "Ativos", "type": "number" }
+          ]
         }
       ]
     },
@@ -97,8 +103,10 @@
           "type": "json",
           "source": "url",
           "url": "http://api:8000/api/v1/analytics/overview",
-          "root_selector": "total_appeals",
-          "format": "table"
+          "format": "table",
+          "columns": [
+            { "selector": "total_appeals", "text": "Recursos", "type": "number" }
+          ]
         }
       ]
     },
@@ -119,7 +127,12 @@
           "type": "json",
           "source": "url",
           "url": "http://api:8000/api/v1/analytics/yearly-trends",
-          "format": "table"
+          "format": "table",
+          "columns": [
+            { "selector": "ano", "text": "Ano", "type": "string" },
+            { "selector": "total_distribuidos", "text": "Total Distribuídos", "type": "number" },
+            { "selector": "baixados", "text": "Baixados", "type": "number" }
+          ]
         }
       ]
     },
@@ -138,7 +151,11 @@
           "type": "json",
           "source": "url",
           "url": "http://api:8000/api/v1/analytics/decisions-by-category",
-          "format": "table"
+          "format": "table",
+          "columns": [
+            { "selector": "categoria_decisao", "text": "Categoria", "type": "string" },
+            { "selector": "total", "text": "Decisões", "type": "number" }
+          ]
         }
       ]
     },
@@ -157,7 +174,11 @@
           "type": "json",
           "source": "url",
           "url": "http://api:8000/api/v1/analytics/top-classes",
-          "format": "table"
+          "format": "table",
+          "columns": [
+            { "selector": "classe_sigla", "text": "Classe", "type": "string" },
+            { "selector": "total_acoes", "text": "Total de Processos", "type": "number" }
+          ]
         }
       ]
     },
@@ -176,7 +197,11 @@
           "type": "json",
           "source": "url",
           "url": "http://api:8000/api/v1/analytics/by-region",
-          "format": "table"
+          "format": "table",
+          "columns": [
+            { "selector": "regiao", "text": "Região", "type": "string" },
+            { "selector": "total_processos", "text": "Processos", "type": "number" }
+          ]
         }
       ]
     }

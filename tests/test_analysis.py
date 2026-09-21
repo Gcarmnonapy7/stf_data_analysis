@@ -19,3 +19,4 @@ def test_generate_executive_report():
         assert "Top Procedural Classes" in content
         assert "Judicial Lead Time" in content
         assert "Decision Outcomes" in content
+
