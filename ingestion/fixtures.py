@@ -87,7 +87,7 @@ TIPOS_RECURSO: List[str] = [
 ]
 
 
-def random_date(start_year: int = 2018, end_year: int = 2025) -> date:
+def random_date(start_year: int = 2018, end_year: int = 2026) -> date:
     start_date = date(start_year, 1, 1)
     end_date = date(end_year, 12, 31)
     delta_days = (end_date - start_date).days
@@ -121,7 +121,7 @@ def generate_fixtures(
         proc_num = random.randint(100000, 1500000)
         proc_id = f"{class_code}-{proc_num}"
         relator = random.choice(MINISTROS)
-        distrib_date = random_date(2018, 2024)
+        distrib_date = random_date(2018, 2026)
         autuacao_date = distrib_date - timedelta(days=random.randint(1, 15))
         assunto = random.choice(ASSUNTOS)
         uf = random.choice(UFS)
@@ -158,8 +158,8 @@ def generate_fixtures(
         num_dec = random.choices([1, 2, 3], weights=[0.6, 0.3, 0.1])[0]
         for step in range(num_dec):
             dec_date = distrib_date + timedelta(days=random.randint(30, 400 * (step + 1)))
-            if dec_date > date(2026, 3, 1):
-                dec_date = date(2026, 2, 28)
+            if dec_date > date(2026, 12, 31):
+                dec_date = date(2026, 12, 31)
 
             tipo_dec = random.choice(TIPOS_DECISAO)
             resultado = random.choice(RESULTADOS)

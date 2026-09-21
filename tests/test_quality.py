@@ -21,6 +21,11 @@ def test_quality_engine():
     assert report.overall_status == "PASS"
     assert report.failed_checks == 0
 
+    # Ensure 2018-2026 temporal validation checks were performed and passed
+    temporal_checks = [r for r in report.results if r.check_name == "temporal_scope_2018_2026"]
+    assert len(temporal_checks) >= 2
+    assert all(c.status == "PASS" for c in temporal_checks)
+
 
 def test_lineage_engine():
     project_root = Path(__file__).resolve().parent.parent

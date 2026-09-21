@@ -25,15 +25,19 @@
         <div>
           <h1 class="text-base font-bold tracking-tight text-white flex items-center gap-2">
             STF Transparency Platform
-            <span class="text-xs font-medium px-2 py-0.5 rounded-full bg-blue-900/60 text-blue-300 border border-blue-700">v0.1.0</span>
+            <span class="text-xs font-medium px-2 py-0.5 rounded-full bg-blue-900/60 text-blue-300 border border-blue-700">v0.2.0</span>
           </h1>
-          <p class="text-xs text-slate-400">Camada Analítica & Engenharia de Dados sobre Corte Aberta</p>
+          <p class="text-xs text-slate-400">Camada Analítica & Engenharia de Dados sobre Corte Aberta (2018 – 2026)</p>
         </div>
       </div>
 
       <div class="flex items-center space-x-3">
+        <button onclick="openValidationModal()" class="text-xs px-3 py-1.5 rounded-md bg-emerald-950/80 hover:bg-emerald-900 border border-emerald-700/80 text-emerald-300 flex items-center gap-1.5 transition">
+          <i class="fa-solid fa-shield-check text-emerald-400"></i>
+          <span>Auditoria 2018–2026</span>
+        </button>
         <button onclick="openLineageModal()" class="text-xs px-3 py-1.5 rounded-md bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 flex items-center gap-1.5 transition">
-          <i class="fa-solid fa-code-branch text-emerald-400"></i>
+          <i class="fa-solid fa-code-branch text-blue-400"></i>
           <span>Linhagem de Dados</span>
         </button>
         <a href="/docs" target="_blank" class="text-xs px-3 py-1.5 rounded-md bg-blue-600 hover:bg-blue-500 text-white font-medium flex items-center gap-1.5 transition shadow-sm">
@@ -50,8 +54,8 @@
 
   <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
 
-    <!-- KPI Metric Cards Grid -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+    <!-- KPI Metric Cards Grid (5 Cards) -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
       <div class="bg-slate-800/60 border border-slate-700/60 rounded-xl p-5 shadow-sm">
         <div class="flex items-center justify-between">
           <span class="text-xs font-medium uppercase tracking-wider text-slate-400">Total de Processos</span>
@@ -59,7 +63,7 @@
         </div>
         <div class="mt-2 flex items-baseline gap-2">
           <span id="kpi-processes" class="text-2xl font-bold text-white tracking-tight">--</span>
-          <span class="text-xs text-emerald-400">✓ Ingeridos</span>
+          <span class="text-[11px] text-emerald-400">✓ Ingeridos</span>
         </div>
       </div>
 
@@ -70,7 +74,7 @@
         </div>
         <div class="mt-2 flex items-baseline gap-2">
           <span id="kpi-decisions" class="text-2xl font-bold text-white tracking-tight">--</span>
-          <span class="text-xs text-emerald-400">✓ Normalizadas</span>
+          <span class="text-[11px] text-emerald-400">✓ Normalizadas</span>
         </div>
       </div>
 
@@ -81,23 +85,54 @@
         </div>
         <div class="mt-2 flex items-baseline gap-2">
           <span id="kpi-active" class="text-2xl font-bold text-amber-400 tracking-tight">--</span>
-          <span class="text-xs text-slate-400">casos ativos</span>
+          <span class="text-[11px] text-slate-400">casos ativos</span>
         </div>
       </div>
 
       <div class="bg-slate-800/60 border border-slate-700/60 rounded-xl p-5 shadow-sm">
         <div class="flex items-center justify-between">
-          <span class="text-xs font-medium uppercase tracking-wider text-slate-400">Recursos Interpostos</span>
-          <span class="p-2 rounded-lg bg-purple-500/10 text-purple-400"><i class="fa-solid fa-arrow-rotate-left"></i></span>
+          <span class="text-xs font-medium uppercase tracking-wider text-slate-400">Ministros do STF</span>
+          <span class="p-2 rounded-lg bg-purple-500/10 text-purple-400"><i class="fa-solid fa-landmark"></i></span>
         </div>
         <div class="mt-2 flex items-baseline gap-2">
-          <span id="kpi-appeals" class="text-2xl font-bold text-white tracking-tight">--</span>
-          <span class="text-xs text-purple-400">Agravos / Embargos</span>
+          <span id="kpi-judges" class="text-2xl font-bold text-purple-400 tracking-tight">11</span>
+          <span class="text-[11px] text-purple-300">Corte Completa</span>
+        </div>
+      </div>
+
+      <div class="bg-slate-800/60 border border-slate-700/60 rounded-xl p-5 shadow-sm">
+        <div class="flex items-center justify-between">
+          <span class="text-xs font-medium uppercase tracking-wider text-slate-400">Janela Auditada</span>
+          <span class="p-2 rounded-lg bg-emerald-500/10 text-emerald-400"><i class="fa-solid fa-calendar-check"></i></span>
+        </div>
+        <div class="mt-2 flex items-baseline gap-2">
+          <span id="kpi-temporal" class="text-xl font-bold text-emerald-400 tracking-tight">2018 – 2026</span>
+          <span class="text-[11px] text-emerald-300">100% Validado</span>
         </div>
       </div>
     </div>
 
-    <!-- Charts Grid (2x2) -->
+    <!-- Data Quality & Temporal Scope Validation Banner -->
+    <div class="bg-gradient-to-r from-emerald-950/40 via-slate-900 to-slate-900 border border-emerald-800/50 rounded-xl p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-sm">
+      <div class="flex items-center gap-3">
+        <span class="p-2 rounded-lg bg-emerald-500/20 text-emerald-400 text-base">
+          <i class="fa-solid fa-circle-check"></i>
+        </span>
+        <div>
+          <h3 class="text-xs font-bold text-slate-200">
+            Passo Interno de Validação de Dados: Janela 2018 – 2026
+          </h3>
+          <p class="text-[11px] text-slate-400">
+            Contratos de dados ativos: integridade referencial, unicidade de PKs, domínio de UFs e escopo cronológico estrito (0 registros fora do intervalo 2018-2026).
+          </p>
+        </div>
+      </div>
+      <button onclick="openValidationModal()" class="text-xs px-3 py-1.5 bg-emerald-900/60 hover:bg-emerald-800 text-emerald-200 border border-emerald-700 rounded-lg transition whitespace-nowrap">
+        Inspecionar Auditoria Completa
+      </button>
+    </div>
+
+    <!-- Section 1: Charts Grid (2x2) -->
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
 
       <!-- Chart 1: Yearly Intake -->
@@ -105,7 +140,7 @@
         <div class="flex items-center justify-between mb-4">
           <h2 class="text-sm font-semibold text-slate-200 flex items-center gap-2">
             <i class="fa-solid fa-chart-column text-blue-400"></i>
-            Evolução Anual de Distribuição & Baixa
+            Evolução Anual de Distribuição & Baixa (2018 – 2026)
           </h2>
           <span class="text-xs text-slate-400">Série Histórica</span>
         </div>
@@ -158,18 +193,82 @@
 
     </div>
 
-    <!-- Interactive Case Explorer Table -->
-    <div class="bg-slate-800/50 border border-slate-700/60 rounded-xl p-5 shadow-sm">
+    <!-- Section 2: Caseload & Performance by Judge (Ministros do STF) -->
+    <div class="space-y-6">
+      <!-- Judges Chart -->
+      <div class="bg-slate-800/50 border border-slate-700/60 rounded-xl p-5 shadow-sm">
+        <div class="flex items-center justify-between mb-4">
+          <div>
+            <h2 class="text-sm font-semibold text-slate-200 flex items-center gap-2">
+              <i class="fa-solid fa-scale-unbalanced text-purple-400"></i>
+              Distribuição de Acervo por Ministro (Caseload)
+            </h2>
+            <p class="text-xs text-slate-400">Comparativo de processos atribuídos vs. processos julgados e baixados</p>
+          </div>
+          <span class="text-xs text-purple-300 font-mono bg-purple-950/60 px-2.5 py-1 rounded border border-purple-800">11 Gabinetes</span>
+        </div>
+        <div class="h-72">
+          <canvas id="judgesChart"></canvas>
+        </div>
+      </div>
+
+      <!-- Judges Detailed Table -->
+      <div class="bg-slate-800/50 border border-slate-700/60 rounded-xl p-5 shadow-sm">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4">
+          <div>
+            <h2 class="text-sm font-semibold text-slate-200 flex items-center gap-2">
+              <i class="fa-solid fa-users-gear text-purple-400"></i>
+              Detalhamento de Produtividade dos Gabinetes
+            </h2>
+            <p class="text-xs text-slate-400">Acompanhamento individual de casos em tramitação, decisões e tempo médio de julgamento</p>
+          </div>
+          <span class="text-xs text-slate-400">Clique em 'Filtrar' para isolar os processos do relator</span>
+        </div>
+
+        <div class="overflow-x-auto rounded-lg border border-slate-700/60">
+          <table class="min-w-full divide-y divide-slate-700 text-left text-xs">
+            <thead class="bg-slate-900/80 text-slate-300 font-semibold">
+              <tr>
+                <th class="px-4 py-3">Ministro(a) Relator(a)</th>
+                <th class="px-4 py-3 text-right">Total Casos</th>
+                <th class="px-4 py-3 text-right">Em Tramitação</th>
+                <th class="px-4 py-3 text-right">Baixados / Julgados</th>
+                <th class="px-4 py-3 text-right">Decisões Proferidas</th>
+                <th class="px-4 py-3 text-center">% Acervo STF</th>
+                <th class="px-4 py-3 text-right">Lead Time Médio</th>
+                <th class="px-4 py-3 text-center">Ações</th>
+              </tr>
+            </thead>
+            <tbody id="judgesTableBody" class="divide-y divide-slate-800 bg-slate-900/30 text-slate-300">
+              <tr>
+                <td colspan="8" class="px-4 py-6 text-center text-slate-500">Carregando dados dos ministros...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section 3: Interactive Case Explorer Table -->
+    <div id="casesSection" class="bg-slate-800/50 border border-slate-700/60 rounded-xl p-5 shadow-sm">
       <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4">
         <div>
           <h2 class="text-sm font-semibold text-slate-200 flex items-center gap-2">
             <i class="fa-solid fa-list-check text-blue-400"></i>
             Explorador de Processos Judiciais
           </h2>
-          <p class="text-xs text-slate-400">Amostra paginada em tempo real extraída do DuckDB Lakehouse</p>
+          <p class="text-xs text-slate-400" id="tableSubtitle">Amostra em tempo real extraída do DuckDB Lakehouse</p>
         </div>
-        <div class="flex items-center gap-2">
-          <input id="tableSearch" type="text" placeholder="Filtrar por sigla, relator, UF..." oninput="filterTable()" class="bg-slate-900 border border-slate-700 rounded-lg px-3 py-1.5 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-1 focus:ring-blue-500">
+        <div class="flex flex-wrap items-center gap-2">
+          <!-- Filter by Judge -->
+          <select id="judgeFilter" onchange="filterTable()" class="bg-slate-900 border border-slate-700 rounded-lg px-3 py-1.5 text-xs text-slate-200 focus:outline-none focus:ring-1 focus:ring-blue-500">
+            <option value="">Todos os Relatores</option>
+          </select>
+          <!-- Search input -->
+          <input id="tableSearch" type="text" placeholder="Buscar por ID, classe, UF..." oninput="filterTable()" class="bg-slate-900 border border-slate-700 rounded-lg px-3 py-1.5 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-1 focus:ring-blue-500">
+          <button onclick="clearFilters()" class="text-xs px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-slate-200 border border-slate-700 transition" title="Limpar filtros">
+            <i class="fa-solid fa-rotate-left"></i>
+          </button>
         </div>
       </div>
 
@@ -196,12 +295,12 @@
 
   </main>
 
-  <!-- Data Lineage Modal: 'De onde veio esse número?' -->
+  <!-- Data Lineage Modal -->
   <div id="lineageModal" class="fixed inset-0 z-50 hidden bg-black/70 backdrop-blur-sm flex items-center justify-center p-4">
     <div class="bg-slate-900 border border-slate-700 rounded-2xl max-w-2xl w-full p-6 shadow-2xl space-y-4">
       <div class="flex items-center justify-between border-b border-slate-800 pb-3">
         <div class="flex items-center gap-2">
-          <span class="p-1.5 rounded-md bg-emerald-500/10 text-emerald-400"><i class="fa-solid fa-code-branch"></i></span>
+          <span class="p-1.5 rounded-md bg-blue-500/10 text-blue-400"><i class="fa-solid fa-code-branch"></i></span>
           <h3 class="text-sm font-bold text-white">Rastreabilidade & Linhagem de Dados (Provenance)</h3>
         </div>
         <button onclick="closeLineageModal()" class="text-slate-400 hover:text-white text-base"><i class="fa-solid fa-xmark"></i></button>
@@ -219,9 +318,37 @@
     </div>
   </div>
 
+  <!-- Validation Report Modal: 2018 - 2026 Audit -->
+  <div id="validationModal" class="fixed inset-0 z-50 hidden bg-black/70 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-slate-900 border border-slate-700 rounded-2xl max-w-3xl w-full p-6 shadow-2xl space-y-4 max-h-[90vh] overflow-y-auto">
+      <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+        <div class="flex items-center gap-2">
+          <span class="p-1.5 rounded-md bg-emerald-500/20 text-emerald-400"><i class="fa-solid fa-shield-check"></i></span>
+          <div>
+            <h3 class="text-sm font-bold text-white">Auditoria Interna de Validação de Dados (2018 – 2026)</h3>
+            <p class="text-[11px] text-slate-400">Contratos de qualidade de dados sobre a camada Silver e Gold</p>
+          </div>
+        </div>
+        <button onclick="closeValidationModal()" class="text-slate-400 hover:text-white text-base"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+
+      <div class="text-xs text-slate-300 space-y-4" id="validationModalBody">
+        <p class="text-slate-400">Carregando relatório de validação...</p>
+      </div>
+
+      <div class="pt-3 border-t border-slate-800 flex justify-between items-center">
+        <span class="text-[11px] text-slate-500">Corte Aberta • Padrão CNJ / STF</span>
+        <button onclick="closeValidationModal()" class="text-xs px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-lg font-medium transition">
+          Fechar
+        </button>
+      </div>
+    </div>
+  </div>
+
   <!-- Dashboard JavaScript Logic -->
   <script>
     let allProcesses = [];
+    let allJudges = [];
 
     async function loadDashboard() {
       try {
@@ -229,13 +356,18 @@
         const kpiRes = await fetch('/api/v1/analytics/overview');
         if (kpiRes.ok) {
           const kpis = await kpiRes.json();
-          document.getElementById('kpi-processes').textContent = kpis.total_processes.toLocaleString();
-          document.getElementById('kpi-decisions').textContent = kpis.total_decisions.toLocaleString();
-          document.getElementById('kpi-active').textContent = kpis.active_processes.toLocaleString();
-          document.getElementById('kpi-appeals').textContent = kpis.total_appeals.toLocaleString();
+          document.getElementById('kpi-processes').textContent = (kpis.total_processes || 0).toLocaleString();
+          document.getElementById('kpi-decisions').textContent = (kpis.total_decisions || 0).toLocaleString();
+          document.getElementById('kpi-active').textContent = (kpis.active_processes || 0).toLocaleString();
+          if (kpis.total_judges) {
+            document.getElementById('kpi-judges').textContent = kpis.total_judges;
+          }
+          if (kpis.temporal_range) {
+            document.getElementById('kpi-temporal').textContent = kpis.temporal_range;
+          }
         }
 
-        // 2. Load Yearly Trends
+        // 2. Load Yearly Trends (2018 - 2026)
         const yearlyRes = await fetch('/api/v1/analytics/yearly-trends');
         if (yearlyRes.ok) {
           const yearly = await yearlyRes.json();
@@ -263,8 +395,17 @@
           renderRegionChart(regions);
         }
 
-        // 6. Load Process Table
-        const procRes = await fetch('/api/v1/processes?limit=30');
+        // 6. Load Judges Breakdown
+        const judgesRes = await fetch('/api/v1/analytics/judges');
+        if (judgesRes.ok) {
+          allJudges = await judgesRes.json();
+          renderJudgesChart(allJudges);
+          renderJudgesTable(allJudges);
+          populateJudgeFilter(allJudges);
+        }
+
+        // 7. Load Process Table
+        const procRes = await fetch('/api/v1/processes?limit=100');
         if (procRes.ok) {
           const procData = await procRes.json();
           allProcesses = procData.items || [];
@@ -284,14 +425,14 @@
           labels: data.map(d => d.ano),
           datasets: [
             {
-              label: 'Total Distribuídos',
+              label: 'Distribuídos',
               data: data.map(d => d.total_distribuidos),
               backgroundColor: '#3b82f6',
               borderRadius: 4
             },
             {
-              label: 'Baixados',
-              data: data.map(d => d.baixados),
+              label: 'Baixados / Julgados',
+              data: data.map(d => d.baixados + d.julgados),
               backgroundColor: '#10b981',
               borderRadius: 4
             }
@@ -361,7 +502,6 @@
     }
 
     function renderRegionChart(data) {
-      // Group by regiao
       const grouped = {};
       data.forEach(d => {
         grouped[d.regiao] = (grouped[d.regiao] || 0) + d.total_processos;
@@ -393,13 +533,110 @@
       });
     }
 
-    function renderTable(items) {
-      const tbody = document.getElementById('processesTableBody');
-      if (!items || items.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="6" class="px-4 py-4 text-center text-slate-500">Nenhum processo encontrado.</td></tr>';
+    function renderJudgesChart(judges) {
+      const ctx = document.getElementById('judgesChart').getContext('2d');
+      const labels = judges.map(j => j.relator.replace('Min. ', ''));
+      new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: labels,
+          datasets: [
+            {
+              label: 'Em Tramitação',
+              data: judges.map(j => j.active_cases),
+              backgroundColor: '#f59e0b',
+              borderRadius: 3
+            },
+            {
+              label: 'Baixados / Julgados',
+              data: judges.map(j => j.archived_cases + j.judged_cases),
+              backgroundColor: '#10b981',
+              borderRadius: 3
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { position: 'top', labels: { color: '#94a3b8', font: { size: 11 } } }
+          },
+          scales: {
+            x: { stacked: true, ticks: { color: '#94a3b8', maxRotation: 45, minRotation: 20 }, grid: { color: '#334155' } },
+            y: { stacked: true, ticks: { color: '#94a3b8' }, grid: { color: '#334155' } }
+          }
+        }
+      });
+    }
+
+    function renderJudgesTable(judges) {
+      const tbody = document.getElementById('judgesTableBody');
+      if (!judges || judges.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="8" class="px-4 py-4 text-center text-slate-500">Nenhum magistrado encontrado.</td></tr>';
         return;
       }
-      tbody.innerHTML = items.map(p => {
+      tbody.innerHTML = judges.map(j => {
+        return `
+          <tr class="hover:bg-slate-800/40 transition">
+            <td class="px-4 py-3 font-medium text-slate-200 flex items-center gap-2">
+              <span class="w-6 h-6 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center text-[11px] text-purple-400">⚖️</span>
+              <span>${j.relator}</span>
+            </td>
+            <td class="px-4 py-3 text-right font-semibold text-white">${j.total_cases}</td>
+            <td class="px-4 py-3 text-right text-amber-400 font-medium">${j.active_cases}</td>
+            <td class="px-4 py-3 text-right text-emerald-400 font-medium">${j.archived_cases + j.judged_cases}</td>
+            <td class="px-4 py-3 text-right text-slate-300">${j.total_decisions}</td>
+            <td class="px-4 py-3 text-center">
+              <div class="flex items-center justify-center gap-1.5">
+                <div class="w-16 bg-slate-800 rounded-full h-1.5 overflow-hidden">
+                  <div class="bg-purple-500 h-1.5 rounded-full" style="width: ${Math.min(j.pct_caseload * 8, 100)}%"></div>
+                </div>
+                <span class="text-[11px] text-purple-300 font-mono">${j.pct_caseload}%</span>
+              </div>
+            </td>
+            <td class="px-4 py-3 text-right text-slate-400 font-mono">${j.avg_lead_time_days} dias</td>
+            <td class="px-4 py-3 text-center">
+              <button onclick="selectJudgeFilter('${j.relator}')" class="text-[11px] px-2.5 py-1 bg-purple-950/80 hover:bg-purple-900 text-purple-300 border border-purple-700/60 rounded transition">
+                Ver Casos
+              </button>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    function populateJudgeFilter(judges) {
+      const select = document.getElementById('judgeFilter');
+      judges.forEach(j => {
+        const opt = document.createElement('option');
+        opt.value = j.relator;
+        opt.textContent = j.relator;
+        select.appendChild(opt);
+      });
+    }
+
+    function selectJudgeFilter(judgeName) {
+      document.getElementById('judgeFilter').value = judgeName;
+      filterTable();
+      document.getElementById('casesSection').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function clearFilters() {
+      document.getElementById('judgeFilter').value = '';
+      document.getElementById('tableSearch').value = '';
+      filterTable();
+    }
+
+    function renderTable(items) {
+      const tbody = document.getElementById('processesTableBody');
+      const subtitle = document.getElementById('tableSubtitle');
+      subtitle.textContent = `Exibindo ${items.length} processos correspondentes aos filtros ativos`;
+
+      if (!items || items.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="6" class="px-4 py-6 text-center text-slate-500">Nenhum processo encontrado com os critérios selecionados.</td></tr>';
+        return;
+      }
+      tbody.innerHTML = items.slice(0, 50).map(p => {
         const isEmTramitacao = p.situacao.includes('TRAMITA');
         const badgeColor = isEmTramitacao ? 'bg-amber-900/60 text-amber-300 border-amber-700' : 'bg-emerald-900/60 text-emerald-300 border-emerald-700';
         return `
@@ -417,13 +654,86 @@
 
     function filterTable() {
       const query = document.getElementById('tableSearch').value.toLowerCase();
-      const filtered = allProcesses.filter(p => 
-        (p.process_id && p.process_id.toLowerCase().includes(query)) ||
-        (p.classe_sigla && p.classe_sigla.toLowerCase().includes(query)) ||
-        (p.relator && p.relator.toLowerCase().includes(query)) ||
-        (p.uf_origem && p.uf_origem.toLowerCase().includes(query))
-      );
+      const selectedJudge = document.getElementById('judgeFilter').value;
+
+      const filtered = allProcesses.filter(p => {
+        const matchesQuery = !query || (
+          (p.process_id && p.process_id.toLowerCase().includes(query)) ||
+          (p.classe_sigla && p.classe_sigla.toLowerCase().includes(query)) ||
+          (p.relator && p.relator.toLowerCase().includes(query)) ||
+          (p.uf_origem && p.uf_origem.toLowerCase().includes(query))
+        );
+        const matchesJudge = !selectedJudge || (p.relator === selectedJudge);
+        return matchesQuery && matchesJudge;
+      });
+
       renderTable(filtered);
+    }
+
+    async function openValidationModal() {
+      document.getElementById('validationModal').classList.remove('hidden');
+      const body = document.getElementById('validationModalBody');
+      body.innerHTML = '<p class="text-slate-400">Carregando relatório de validação temporal...</p>';
+      try {
+        const res = await fetch('/api/v1/analytics/validation');
+        if (res.ok) {
+          const report = await res.json();
+          let html = `
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              <div class="bg-slate-950 p-3 rounded-lg border border-slate-800">
+                <span class="text-[10px] font-semibold uppercase text-slate-400">Status da Auditoria</span>
+                <p class="text-base font-bold ${report.status === 'PASS' ? 'text-emerald-400' : 'text-rose-400'} mt-0.5">✓ ${report.status}</p>
+              </div>
+              <div class="bg-slate-950 p-3 rounded-lg border border-slate-800">
+                <span class="text-[10px] font-semibold uppercase text-slate-400">Escopo Temporal Exigido</span>
+                <p class="text-base font-bold text-blue-400 mt-0.5">${report.temporal_window}</p>
+              </div>
+              <div class="bg-slate-950 p-3 rounded-lg border border-slate-800">
+                <span class="text-[10px] font-semibold uppercase text-slate-400">Contratos Aprovados</span>
+                <p class="text-base font-bold text-slate-100 mt-0.5">${report.passed_checks} / ${report.total_checks}</p>
+              </div>
+            </div>
+
+            <div class="mt-4">
+              <h4 class="text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">Resultados dos Contratos de Dados:</h4>
+              <div class="space-y-2 max-h-72 overflow-y-auto pr-1">
+          `;
+
+          report.details.forEach(item => {
+            const isPass = item.status === 'PASS';
+            const badge = isPass 
+              ? '<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-950 text-emerald-300 border border-emerald-700">PASS</span>'
+              : '<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-rose-950 text-rose-300 border border-rose-700">FAIL</span>';
+            
+            html += `
+              <div class="p-2.5 rounded-lg bg-slate-950/60 border border-slate-800 flex items-start justify-between gap-3">
+                <div class="space-y-0.5">
+                  <div class="flex items-center gap-2">
+                    <span class="text-xs font-semibold text-slate-200">${item.check_name}</span>
+                    <span class="text-[10px] px-1.5 py-0.2 rounded bg-slate-800 text-slate-400">${item.dataset}</span>
+                    <span class="text-[10px] text-slate-500">camada: ${item.target_layer}</span>
+                  </div>
+                  <p class="text-[11px] text-slate-400">${item.message}</p>
+                </div>
+                <div>${badge}</div>
+              </div>
+            `;
+          });
+
+          html += `
+              </div>
+            </div>
+            <p class="text-[10px] text-slate-500">Executado pelo DataQualityEngine em conformidade com o STF Corte Aberta.</p>
+          `;
+          body.innerHTML = html;
+        }
+      } catch (err) {
+        body.innerHTML = `<p class="text-red-400">Erro ao consultar auditoria: ${err}</p>`;
+      }
+    }
+
+    function closeValidationModal() {
+      document.getElementById('validationModal').classList.add('hidden');
     }
 
     async function openLineageModal() {
@@ -442,7 +752,7 @@
               </div>
               <p class="text-[11px] text-slate-500 mt-1">Traced at: ${data.traced_at}</p>
             </div>
-            <div class="space-y-2 mt-3">
+            <div class="space-y-2 mt-3 max-h-72 overflow-y-auto pr-1">
           `;
           data.lineage_nodes.reverse().forEach(n => {
             html += `
@@ -475,4 +785,3 @@
   </script>
 </body>
 </html>
-

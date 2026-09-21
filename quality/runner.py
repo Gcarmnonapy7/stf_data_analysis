@@ -156,6 +156,9 @@ class DataQualityEngine:
             details={"invalid_date_count": invalid_years},
         ))
 
+        # Temporal scope verification (2018 - 2026 Corte Aberta window)
+        results.append(self._validate_temporal_scope_2018_2026(df, "processos", "data_distribuicao"))
+
         # Valid UF domain
         ufs_in_data = set(df.select("uf_origem").drop_nulls().to_series().to_list())
         invalid_ufs = ufs_in_data - VALID_UFS
@@ -195,7 +198,51 @@ class DataQualityEngine:
             details={"null_dates": null_dates},
         ))
 
+        # Temporal scope verification (2018 - 2026 Corte Aberta window)
+        results.append(self._validate_temporal_scope_2018_2026(df, "decisoes", "data_decisao"))
+
         return results
+
+    def _validate_temporal_scope_2018_2026(
+        self, df: pl.DataFrame, dataset_name: str, date_column: str
+    ) -> CheckResult:
+        """Enforces that all records fall strictly within the 2018-2026 analytical window."""
+        valid_df = df.filter(pl.col(date_column).is_not_null())
+        if valid_df.is_empty():
+            return CheckResult(
+                check_name="temporal_scope_2018_2026",
+                target_layer="silver",
+                dataset=dataset_name,
+                status="FAIL",
+                message=f"No valid date records found in column {date_column} for {dataset_name}.",
+                details={"out_of_bounds_count": 0, "total_records": 0},
+            )
+
+        out_of_bounds = valid_df.filter(
+            (pl.col(date_column).dt.year() < 2018) | (pl.col(date_column).dt.year() > 2026)
+        ).height
+        min_year = valid_df.select(pl.col(date_column).dt.year().min()).item()
+        max_year = valid_df.select(pl.col(date_column).dt.year().max()).item()
+
+        is_valid = out_of_bounds == 0 and min_year is not None and max_year is not None and min_year >= 2018 and max_year <= 2026
+        return CheckResult(
+            check_name="temporal_scope_2018_2026",
+            target_layer="silver",
+            dataset=dataset_name,
+            status="PASS" if is_valid else "FAIL",
+            message=(
+                f"Validado escopo temporal 2018-2026 em {dataset_name} "
+                f"({valid_df.height} registros, anos {min_year} a {max_year}, 0 fora do escopo)."
+                if is_valid
+                else f"Violação de escopo temporal em {dataset_name}: {out_of_bounds} registros fora de [2018, 2026]."
+            ),
+            details={
+                "min_year": min_year,
+                "max_year": max_year,
+                "out_of_bounds_count": out_of_bounds,
+                "total_records": valid_df.height,
+            },
+        )
 
     def _validate_referential_integrity(
         self, df_proc: pl.DataFrame, df_dec: pl.DataFrame

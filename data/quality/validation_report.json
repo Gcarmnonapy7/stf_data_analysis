@@ -1,7 +1,7 @@
 {
-  "timestamp": "2026-09-21T18:52:11.014055+00:00",
-  "total_checks": 11,
-  "passed_checks": 11,
+  "timestamp": "2026-09-21T19:09:41.119210+00:00",
+  "total_checks": 13,
+  "passed_checks": 13,
   "failed_checks": 0,
   "overall_status": "PASS",
   "results": [
@@ -37,6 +37,19 @@
       }
     },
     {
+      "check_name": "temporal_scope_2018_2026",
+      "target_layer": "silver",
+      "dataset": "processos",
+      "status": "PASS",
+      "message": "Validado escopo temporal 2018-2026 em processos (1000 registros, anos 2018 a 2026, 0 fora do escopo).",
+      "details": {
+        "min_year": 2018,
+        "max_year": 2026,
+        "out_of_bounds_count": 0,
+        "total_records": 1000
+      }
+    },
+    {
       "check_name": "valid_uf_domains",
       "target_layer": "silver",
       "dataset": "processos",
@@ -67,6 +80,19 @@
       }
     },
     {
+      "check_name": "temporal_scope_2018_2026",
+      "target_layer": "silver",
+      "dataset": "decisoes",
+      "status": "PASS",
+      "message": "Validado escopo temporal 2018-2026 em decisoes (1512 registros, anos 2018 a 2026, 0 fora do escopo).",
+      "details": {
+        "min_year": 2018,
+        "max_year": 2026,
+        "out_of_bounds_count": 0,
+        "total_records": 1512
+      }
+    },
+    {
       "check_name": "referential_temporal_consistency",
       "target_layer": "silver",
       "dataset": "cross_process_decision",
@@ -83,8 +109,8 @@
       "status": "PASS",
       "message": "File SHA-256 matches latest manifest.",
       "details": {
-        "recorded_hash": "7a63621e078259a42a4adfa7935b601aff9bf89a255e753fe6080172ccb4329c",
-        "computed_hash": "7a63621e078259a42a4adfa7935b601aff9bf89a255e753fe6080172ccb4329c"
+        "recorded_hash": "a644984769a9c63972ea0bc18bb96d6ecc9e580bd5d460596b78578352107dde",
+        "computed_hash": "a644984769a9c63972ea0bc18bb96d6ecc9e580bd5d460596b78578352107dde"
       }
     },
     {
@@ -94,8 +120,8 @@
       "status": "PASS",
       "message": "File SHA-256 matches latest manifest.",
       "details": {
-        "recorded_hash": "a78854b3aea516b65284eb57a883328cb07ff770b350ec29f971989390830022",
-        "computed_hash": "a78854b3aea516b65284eb57a883328cb07ff770b350ec29f971989390830022"
+        "recorded_hash": "bdef394697e82a30e15da1aaca1f433d0f6442c46e2a6f75f875033da8e40bc6",
+        "computed_hash": "bdef394697e82a30e15da1aaca1f433d0f6442c46e2a6f75f875033da8e40bc6"
       }
     },
     {
@@ -105,8 +131,8 @@
       "status": "PASS",
       "message": "File SHA-256 matches latest manifest.",
       "details": {
-        "recorded_hash": "0d2df2c09f408a3769320fda9aae261f45305cbb3248da37dcbda9564a809967",
-        "computed_hash": "0d2df2c09f408a3769320fda9aae261f45305cbb3248da37dcbda9564a809967"
+        "recorded_hash": "93137cae49e1d6b32b74c740a9787c524df1c81e6c3666973ca1ed807835f9cb",
+        "computed_hash": "93137cae49e1d6b32b74c740a9787c524df1c81e6c3666973ca1ed807835f9cb"
       }
     },
     {
@@ -116,8 +142,8 @@
       "status": "PASS",
       "message": "File SHA-256 matches latest manifest.",
       "details": {
-        "recorded_hash": "7ea976411a2ebff8ba6d9ff7bd0a730d1a398d6a4889dca065b2afac8deb2545",
-        "computed_hash": "7ea976411a2ebff8ba6d9ff7bd0a730d1a398d6a4889dca065b2afac8deb2545"
+        "recorded_hash": "2e7475e0396bc6ec65f232b740474847423c69d943d78ea41bcd92f2ccba7ca7",
+        "computed_hash": "2e7475e0396bc6ec65f232b740474847423c69d943d78ea41bcd92f2ccba7ca7"
       }
     }
   ]

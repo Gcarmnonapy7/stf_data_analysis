@@ -48,6 +48,31 @@ class KPIOverview(BaseModel):
     active_processes: int
     archived_processes: int
     total_appeals: int
+    total_judges: Optional[int] = 11
+    temporal_range: Optional[str] = "2018 - 2026"
+
+
+class JudgeCaseloadItem(BaseModel):
+    relator: str
+    total_cases: int
+    active_cases: int
+    archived_cases: int
+    judged_cases: int
+    total_decisions: int
+    monocratic_decisions: int
+    collegial_decisions: int
+    pct_caseload: float
+    avg_lead_time_days: float
+
+
+class ValidationSummaryResponse(BaseModel):
+    status: str
+    total_checks: int
+    passed_checks: int
+    failed_checks: int
+    temporal_window: str = "2018 - 2026"
+    timestamp: str
+    details: List[Dict[str, Any]]
 
 
 class LineageNodeItem(BaseModel):

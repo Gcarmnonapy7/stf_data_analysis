@@ -72,3 +72,27 @@ def test_get_lineage():
     assert "lineage_nodes" in data
     assert len(data["lineage_nodes"]) >= 3
 
+
+def test_get_judges():
+    response = client.get("/api/v1/analytics/judges")
+    assert response.status_code == 200
+    data = response.json()
+    assert isinstance(data, list)
+    assert len(data) == 11
+    first = data[0]
+    assert "relator" in first
+    assert "total_cases" in first
+    assert "active_cases" in first
+    assert "total_decisions" in first
+    assert "pct_caseload" in first
+
+
+def test_get_validation():
+    response = client.get("/api/v1/analytics/validation")
+    assert response.status_code == 200
+    data = response.json()
+    assert "status" in data
+    assert data["status"] == "PASS"
+    assert data["temporal_window"] == "2018 - 2026"
+    assert "details" in data
+

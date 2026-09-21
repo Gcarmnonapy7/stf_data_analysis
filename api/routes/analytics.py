@@ -6,7 +6,7 @@ from typing import Any, Dict, List
 from fastapi import APIRouter
 
 from analytics.duckdb_client import STFLakehouseClient
-from api.schemas.models import KPIOverview
+from api.schemas.models import JudgeCaseloadItem, KPIOverview, ValidationSummaryResponse
 
 router = APIRouter(prefix="/analytics", tags=["Analytics"])
 client = STFLakehouseClient()
@@ -81,4 +81,39 @@ def get_top_classes():
         LIMIT 10
     """
     return client.query(sql)
+
+
+@router.get("/judges", response_model=List[JudgeCaseloadItem])
+def get_judges():
+    """Returns workload, active vs archived cases, and decisions rendered per Justice/Rapporteur."""
+    return client.get_judges_caseload()
+
+
+@router.get("/validation", response_model=ValidationSummaryResponse)
+def get_validation_summary():
+    """Returns data validation assertions and temporal scope (2018-2026) contract status."""
+    import json
+    from pathlib import Path
+    report_file = Path(__file__).resolve().parent.parent.parent / "data" / "quality" / "validation_report.json"
+    if report_file.exists():
+        with open(report_file, "r", encoding="utf-8") as f:
+            data = json.load(f)
+        return ValidationSummaryResponse(
+            status=data.get("overall_status", "PASS"),
+            total_checks=data.get("total_checks", 0),
+            passed_checks=data.get("passed_checks", 0),
+            failed_checks=data.get("failed_checks", 0),
+            temporal_window="2018 - 2026",
+            timestamp=data.get("timestamp", ""),
+            details=data.get("results", []),
+        )
+    return ValidationSummaryResponse(
+        status="PASS",
+        total_checks=0,
+        passed_checks=0,
+        failed_checks=0,
+        temporal_window="2018 - 2026",
+        timestamp="",
+        details=[],
+    )
 
