@@ -1,0 +1,124 @@
+{
+  "timestamp": "2026-09-21T18:16:04.989489+00:00",
+  "total_checks": 11,
+  "passed_checks": 11,
+  "failed_checks": 0,
+  "overall_status": "PASS",
+  "results": [
+    {
+      "check_name": "primary_key_uniqueness",
+      "target_layer": "silver",
+      "dataset": "processos",
+      "status": "PASS",
+      "message": "All process_id values are unique.",
+      "details": {
+        "duplicates_count": 0
+      }
+    },
+    {
+      "check_name": "not_null_critical_fields",
+      "target_layer": "silver",
+      "dataset": "processos",
+      "status": "PASS",
+      "message": "Null check: 0 null IDs, 0 null distribution dates.",
+      "details": {
+        "null_ids": 0,
+        "null_dates": 0
+      }
+    },
+    {
+      "check_name": "reasonable_dates",
+      "target_layer": "silver",
+      "dataset": "processos",
+      "status": "PASS",
+      "message": "0 processes have unreasonable distribution dates.",
+      "details": {
+        "invalid_date_count": 0
+      }
+    },
+    {
+      "check_name": "valid_uf_domains",
+      "target_layer": "silver",
+      "dataset": "processos",
+      "status": "PASS",
+      "message": "All UFs belong to valid Brazilian state codes.",
+      "details": {
+        "invalid_ufs": []
+      }
+    },
+    {
+      "check_name": "primary_key_uniqueness",
+      "target_layer": "silver",
+      "dataset": "decisoes",
+      "status": "PASS",
+      "message": "All decision_id values are unique.",
+      "details": {
+        "duplicates_count": 0
+      }
+    },
+    {
+      "check_name": "not_null_decision_date",
+      "target_layer": "silver",
+      "dataset": "decisoes",
+      "status": "PASS",
+      "message": "All decision dates are populated.",
+      "details": {
+        "null_dates": 0
+      }
+    },
+    {
+      "check_name": "referential_temporal_consistency",
+      "target_layer": "silver",
+      "dataset": "cross_process_decision",
+      "status": "PASS",
+      "message": "All joined decisions occur on or after their process distribution date.",
+      "details": {
+        "anomalous_dates": 0
+      }
+    },
+    {
+      "check_name": "checksum_integrity",
+      "target_layer": "bronze",
+      "dataset": "processos",
+      "status": "PASS",
+      "message": "File SHA-256 matches latest manifest.",
+      "details": {
+        "recorded_hash": "7a63621e078259a42a4adfa7935b601aff9bf89a255e753fe6080172ccb4329c",
+        "computed_hash": "7a63621e078259a42a4adfa7935b601aff9bf89a255e753fe6080172ccb4329c"
+      }
+    },
+    {
+      "check_name": "checksum_integrity",
+      "target_layer": "bronze",
+      "dataset": "decisoes",
+      "status": "PASS",
+      "message": "File SHA-256 matches latest manifest.",
+      "details": {
+        "recorded_hash": "a78854b3aea516b65284eb57a883328cb07ff770b350ec29f971989390830022",
+        "computed_hash": "a78854b3aea516b65284eb57a883328cb07ff770b350ec29f971989390830022"
+      }
+    },
+    {
+      "check_name": "checksum_integrity",
+      "target_layer": "bronze",
+      "dataset": "recursos",
+      "status": "PASS",
+      "message": "File SHA-256 matches latest manifest.",
+      "details": {
+        "recorded_hash": "0d2df2c09f408a3769320fda9aae261f45305cbb3248da37dcbda9564a809967",
+        "computed_hash": "0d2df2c09f408a3769320fda9aae261f45305cbb3248da37dcbda9564a809967"
+      }
+    },
+    {
+      "check_name": "checksum_integrity",
+      "target_layer": "bronze",
+      "dataset": "repercussao_geral",
+      "status": "PASS",
+      "message": "File SHA-256 matches latest manifest.",
+      "details": {
+        "recorded_hash": "7ea976411a2ebff8ba6d9ff7bd0a730d1a398d6a4889dca065b2afac8deb2545",
+        "computed_hash": "7ea976411a2ebff8ba6d9ff7bd0a730d1a398d6a4889dca065b2afac8deb2545"
+      }
+    }
+  ]
+}
