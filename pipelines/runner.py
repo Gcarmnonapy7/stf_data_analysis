@@ -21,6 +21,7 @@ from rich.table import Table
 from ingestion.download import DatasetDownloader
 from pipelines.gold.builder import GoldModelBuilder
 from quality.runner import DataQualityEngine
+from transformations.administrative import clean_budget, clean_personnel, clean_remuneration
 from transformations.appeals import clean_appeals, clean_repercussao_geral
 from transformations.decisions import clean_decisions
 from transformations.processes import clean_processes
@@ -85,6 +86,30 @@ def run_pipeline(use_sample: bool = True, rows: int = 1000, enforce_quality_gate
     if rg_raw.exists():
         df_rg = clean_repercussao_geral(rg_raw, rg_silver)
         console.print(f"✓ Processed [bold]repercussão geral[/bold]: {df_rg.height:,} rows -> {rg_silver.name}")
+
+    pes_raw = raw_dir / "pessoal" / "pessoal_stf_raw.csv"
+    if not pes_raw.exists():
+        pes_raw = raw_dir / "pessoal" / "pessoal_stf.csv"
+    pes_silver = silver_dir / "pessoal.parquet"
+    if pes_raw.exists():
+        df_pes = clean_personnel(pes_raw, pes_silver)
+        console.print(f"✓ Processed [bold]pessoal administrativo[/bold]: {df_pes.height:,} rows -> {pes_silver.name}")
+
+    rem_raw = raw_dir / "remuneracao" / "remuneracao_stf_raw.csv"
+    if not rem_raw.exists():
+        rem_raw = raw_dir / "remuneracao" / "remuneracao_stf.csv"
+    rem_silver = silver_dir / "remuneracao.parquet"
+    if rem_raw.exists():
+        df_rem = clean_remuneration(rem_raw, rem_silver)
+        console.print(f"✓ Processed [bold]remuneração & folha[/bold]: {df_rem.height:,} rows -> {rem_silver.name}")
+
+    orc_raw = raw_dir / "orcamento" / "orcamento_stf_raw.csv"
+    if not orc_raw.exists():
+        orc_raw = raw_dir / "orcamento" / "orcamento_stf.csv"
+    orc_silver = silver_dir / "orcamento.parquet"
+    if orc_raw.exists():
+        df_orc = clean_budget(orc_raw, orc_silver)
+        console.print(f"✓ Processed [bold]orçamento & execução[/bold]: {df_orc.height:,} rows -> {orc_silver.name}")
 
     # -------------------------------------------------------------
     # Stage 3: Data Quality Gate

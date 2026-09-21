@@ -26,6 +26,9 @@ CORTE_ABERTA_ENDPOINTS = {
     "decisoes": "https://transparencia.stf.jus.br/dados_abertos/decisoes_stf.csv",
     "recursos": "https://transparencia.stf.jus.br/dados_abertos/recursos_stf.csv",
     "repercussao_geral": "https://transparencia.stf.jus.br/dados_abertos/repercussao_geral_stf.csv",
+    "pessoal": "https://transparencia.stf.jus.br/dados_abertos/pessoal_stf.csv",
+    "remuneracao": "https://transparencia.stf.jus.br/dados_abertos/remuneracao_stf.csv",
+    "orcamento": "https://transparencia.stf.jus.br/dados_abertos/orcamento_stf.csv",
 }
 
 
@@ -51,7 +54,7 @@ class DatasetDownloader:
         self.session.mount("http://", adapter)
         self.session.mount("https://", adapter)
         self.session.headers.update({
-            "User-Agent": "STF-Transparency-Platform/0.1.0 (+https://github.com/gabrielcarmonapy/sft_data)",
+            "User-Agent": "STF-Transparency-Platform/1.0.0 (+https://github.com/Gcarmnonapy7/stf_data_analysis)",
             "Accept": "text/csv,application/octet-stream,*/*",
         })
 

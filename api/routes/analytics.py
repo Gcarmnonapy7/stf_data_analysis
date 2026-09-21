@@ -117,3 +117,39 @@ def get_validation_summary():
         details=[],
     )
 
+
+@router.get("/survival")
+def get_survival_analysis() -> Dict[str, Any]:
+    """Returns Kaplan-Meier judicial backlog survival probabilities and backlog half-life."""
+    from analytics.survival import BacklogSurvivalAnalyzer
+    analyzer = BacklogSurvivalAnalyzer()
+    return analyzer.compute_survival_overview()
+
+
+@router.post("/query")
+def execute_sql_query(payload: Dict[str, Any]) -> Dict[str, Any]:
+    """Executes arbitrary analytical SQL query over the DuckDB warehouse and returns columns and rows."""
+    import time
+    sql = payload.get("sql", "").strip()
+    if not sql:
+        return {"error": "Empty SQL statement."}
+    
+    # Restrict to read-only analytical queries
+    first_word = sql.split()[0].upper() if sql.split() else ""
+    if first_word not in ("SELECT", "WITH", "SHOW", "DESCRIBE", "EXPLAIN"):
+        return {"error": "Only read-only queries (SELECT, WITH, SHOW, DESCRIBE) are permitted."}
+
+    start = time.perf_counter()
+    try:
+        results = client.query(sql)
+        elapsed_ms = round((time.perf_counter() - start) * 1000, 2)
+        columns = list(results[0].keys()) if results else []
+        return {
+            "columns": columns,
+            "rows": results,
+            "row_count": len(results),
+            "execution_time_ms": elapsed_ms,
+        }
+    except Exception as e:
+        return {"error": str(e), "execution_time_ms": round((time.perf_counter() - start) * 1000, 2)}
+

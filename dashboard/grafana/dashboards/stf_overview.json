@@ -204,6 +204,55 @@
           ]
         }
       ]
+    },
+    {
+      "id": 9,
+      "title": "Distribuição de Caseload por Ministro Relator",
+      "type": "barchart",
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 21 },
+      "options": {
+        "orientation": "horizontal",
+        "showValue": "auto",
+        "stacking": { "mode": "normal" }
+      },
+      "targets": [
+        {
+          "datasource": { "type": "yesoreyeram-infinity-datasource", "uid": "STF-API" },
+          "type": "json",
+          "source": "url",
+          "url": "http://api:8000/api/v1/analytics/judges",
+          "format": "table",
+          "columns": [
+            { "selector": "relator", "text": "Ministro Relator", "type": "string" },
+            { "selector": "active_cases", "text": "Em Tramitação", "type": "number" },
+            { "selector": "archived_cases", "text": "Baixados / Julgados", "type": "number" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 10,
+      "title": "Execução Orçamentária Anual do STF (R$ Milhões)",
+      "type": "barchart",
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 21 },
+      "options": {
+        "orientation": "auto",
+        "showValue": "auto"
+      },
+      "targets": [
+        {
+          "datasource": { "type": "yesoreyeram-infinity-datasource", "uid": "STF-API" },
+          "type": "json",
+          "source": "url",
+          "url": "http://api:8000/api/v1/administrative/budget/summary",
+          "format": "table",
+          "columns": [
+            { "selector": "ano_exercicio", "text": "Exercício", "type": "string" },
+            { "selector": "dotacao_atualizada_milhoes", "text": "Dotação Atualizada", "type": "number" },
+            { "selector": "liquidado_milhoes", "text": "Despesas Liquidadas", "type": "number" }
+          ]
+        }
+      ]
     }
   ],
   "schemaVersion": 38,

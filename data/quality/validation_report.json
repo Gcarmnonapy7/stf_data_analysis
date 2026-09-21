@@ -1,7 +1,7 @@
 {
-  "timestamp": "2026-09-21T19:39:48.685514+00:00",
-  "total_checks": 13,
-  "passed_checks": 13,
+  "timestamp": "2026-09-21T20:07:52.990254+00:00",
+  "total_checks": 19,
+  "passed_checks": 19,
   "failed_checks": 0,
   "overall_status": "PASS",
   "results": [
@@ -41,12 +41,12 @@
       "target_layer": "silver",
       "dataset": "processos",
       "status": "PASS",
-      "message": "Validado escopo temporal 2018-2026 em processos (1000 registros, anos 2018 a 2026, 0 fora do escopo).",
+      "message": "Validado escopo temporal 2018-2026 em processos (1050 registros, anos 2018 a 2026, 0 fora do escopo).",
       "details": {
         "min_year": 2018,
         "max_year": 2026,
         "out_of_bounds_count": 0,
-        "total_records": 1000
+        "total_records": 1050
       }
     },
     {
@@ -103,14 +103,74 @@
       }
     },
     {
+      "check_name": "remuneration_pk_uniqueness",
+      "target_layer": "silver",
+      "dataset": "remuneracao",
+      "status": "PASS",
+      "message": "All remuneracao_id values are unique.",
+      "details": {
+        "duplicates_count": 0
+      }
+    },
+    {
+      "check_name": "non_negative_net_salary",
+      "target_layer": "silver",
+      "dataset": "remuneracao",
+      "status": "PASS",
+      "message": "All net salaries are non-negative.",
+      "details": {
+        "negative_count": 0
+      }
+    },
+    {
+      "check_name": "constitutional_ceiling_integrity",
+      "target_layer": "silver",
+      "dataset": "remuneracao",
+      "status": "PASS",
+      "message": "Constitutional ceiling abate_teto verified.",
+      "details": {
+        "invalid_abate_teto": 0
+      }
+    },
+    {
+      "check_name": "budget_pk_uniqueness",
+      "target_layer": "silver",
+      "dataset": "orcamento",
+      "status": "PASS",
+      "message": "All orcamento_id values are unique.",
+      "details": {
+        "duplicates_count": 0
+      }
+    },
+    {
+      "check_name": "non_negative_budget_values",
+      "target_layer": "silver",
+      "dataset": "orcamento",
+      "status": "PASS",
+      "message": "All budget monetary amounts are non-negative.",
+      "details": {
+        "negative_count": 0
+      }
+    },
+    {
+      "check_name": "budget_year_range",
+      "target_layer": "silver",
+      "dataset": "orcamento",
+      "status": "PASS",
+      "message": "All budget entries comply with 2018-2026 fiscal cycle.",
+      "details": {
+        "invalid_years": 0
+      }
+    },
+    {
       "check_name": "checksum_integrity",
       "target_layer": "bronze",
       "dataset": "processos",
       "status": "PASS",
       "message": "File SHA-256 matches latest manifest.",
       "details": {
-        "recorded_hash": "a644984769a9c63972ea0bc18bb96d6ecc9e580bd5d460596b78578352107dde",
-        "computed_hash": "a644984769a9c63972ea0bc18bb96d6ecc9e580bd5d460596b78578352107dde"
+        "recorded_hash": "d24533d276f73ea2619f0fb996ef29fe690bbe4771cd325e3bb63cfe6c2d3501",
+        "computed_hash": "d24533d276f73ea2619f0fb996ef29fe690bbe4771cd325e3bb63cfe6c2d3501"
       }
     },
     {
@@ -120,8 +180,8 @@
       "status": "PASS",
       "message": "File SHA-256 matches latest manifest.",
       "details": {
-        "recorded_hash": "bdef394697e82a30e15da1aaca1f433d0f6442c46e2a6f75f875033da8e40bc6",
-        "computed_hash": "bdef394697e82a30e15da1aaca1f433d0f6442c46e2a6f75f875033da8e40bc6"
+        "recorded_hash": "d64d58cb185af65150b4939921f34c66d57e636622a9dbbe542d9d70f58d2486",
+        "computed_hash": "d64d58cb185af65150b4939921f34c66d57e636622a9dbbe542d9d70f58d2486"
       }
     },
     {

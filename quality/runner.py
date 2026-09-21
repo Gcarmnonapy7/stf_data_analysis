@@ -98,7 +98,19 @@ class DataQualityEngine:
         if proc_parquet.exists() and dec_parquet.exists():
             results.append(self._validate_referential_integrity(df_proc, df_dec))
 
-        # 4. Ingestion manifest checksum integrity
+        # 4. Verify Administrative: Remuneração
+        rem_parquet = self.silver_dir / "remuneracao.parquet"
+        if rem_parquet.exists():
+            df_rem = pl.read_parquet(rem_parquet)
+            results.extend(self._validate_remuneration(df_rem))
+
+        # 5. Verify Administrative: Orçamento
+        orc_parquet = self.silver_dir / "orcamento.parquet"
+        if orc_parquet.exists():
+            df_orc = pl.read_parquet(orc_parquet)
+            results.extend(self._validate_budget(df_orc))
+
+        # 6. Ingestion manifest checksum integrity
         results.extend(self._validate_manifest_checksums())
 
         # Compile report
@@ -267,6 +279,79 @@ class DataQualityEngine:
             else "All joined decisions occur on or after their process distribution date.",
             details={"anomalous_dates": anomalous_dates},
         )
+
+    def _validate_remuneration(self, df: pl.DataFrame) -> List[CheckResult]:
+        results = []
+        # Unique remuneracao_id
+        dups = df.height - df.select("remuneracao_id").n_unique()
+        results.append(CheckResult(
+            check_name="remuneration_pk_uniqueness",
+            target_layer="silver",
+            dataset="remuneracao",
+            status="PASS" if dups == 0 else "FAIL",
+            message=f"Found {dups} duplicate remuneracao_id entries." if dups > 0 else "All remuneracao_id values are unique.",
+            details={"duplicates_count": dups},
+        ))
+        # Non-negative net remuneration
+        neg_salaries = df.filter(pl.col("remuneracao_liquida") < 0).height
+        results.append(CheckResult(
+            check_name="non_negative_net_salary",
+            target_layer="silver",
+            dataset="remuneracao",
+            status="PASS" if neg_salaries == 0 else "FAIL",
+            message=f"{neg_salaries} records have negative net salary." if neg_salaries > 0 else "All net salaries are non-negative.",
+            details={"negative_count": neg_salaries},
+        ))
+        # Valid constitutional ceiling calculation
+        teto_violations = df.filter(pl.col("abate_teto") < 0).height
+        results.append(CheckResult(
+            check_name="constitutional_ceiling_integrity",
+            target_layer="silver",
+            dataset="remuneracao",
+            status="PASS" if teto_violations == 0 else "FAIL",
+            message=f"{teto_violations} records have invalid abate_teto." if teto_violations > 0 else "Constitutional ceiling abate_teto verified.",
+            details={"invalid_abate_teto": teto_violations},
+        ))
+        return results
+
+    def _validate_budget(self, df: pl.DataFrame) -> List[CheckResult]:
+        results = []
+        # Unique orcamento_id
+        dups = df.height - df.select("orcamento_id").n_unique()
+        results.append(CheckResult(
+            check_name="budget_pk_uniqueness",
+            target_layer="silver",
+            dataset="orcamento",
+            status="PASS" if dups == 0 else "FAIL",
+            message=f"Found {dups} duplicate orcamento_id entries." if dups > 0 else "All orcamento_id values are unique.",
+            details={"duplicates_count": dups},
+        ))
+        # Non-negative financial execution amounts
+        neg_money = df.filter(
+            (pl.col("dotacao_atualizada") < 0) |
+            (pl.col("empenhado") < 0) |
+            (pl.col("liquidado") < 0) |
+            (pl.col("pago") < 0)
+        ).height
+        results.append(CheckResult(
+            check_name="non_negative_budget_values",
+            target_layer="silver",
+            dataset="orcamento",
+            status="PASS" if neg_money == 0 else "FAIL",
+            message=f"{neg_money} budget entries have negative values." if neg_money > 0 else "All budget monetary amounts are non-negative.",
+            details={"negative_count": neg_money},
+        ))
+        # Year validity
+        invalid_years = df.filter(pl.col("ano_exercicio") < 2018).height
+        results.append(CheckResult(
+            check_name="budget_year_range",
+            target_layer="silver",
+            dataset="orcamento",
+            status="PASS" if invalid_years == 0 else "FAIL",
+            message=f"{invalid_years} budget records prior to 2018." if invalid_years > 0 else "All budget entries comply with 2018-2026 fiscal cycle.",
+            details={"invalid_years": invalid_years},
+        ))
+        return results
 
     def _validate_manifest_checksums(self) -> List[CheckResult]:
         results = []

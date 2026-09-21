@@ -34,6 +34,11 @@ data/curated/*.duckdb.wal
 data/curated/*.parquet
 data/silver/*.parquet
 data/raw/*/*.csv
+data/exports/
+data/metadata/watermarks.json
+
+# Notebook checkpoints
+.ipynb_checkpoints/
 
 # IDE
 .idea/

@@ -7,20 +7,23 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import HTMLResponse
 
+from api.routes.administrative import router as administrative_router
 from api.routes.analytics import router as analytics_router
 from api.routes.decisions import router as decisions_router
+from api.routes.export import router as export_router
 from api.routes.lineage import router as lineage_router
 from api.routes.processes import router as processes_router
 
 app = FastAPI(
     title="STF Transparency Platform API",
     description="""
-    Open-source data engineering and analytical API over public judicial data 
+    Open-source data engineering and analytical API over public judicial and administrative data 
     from the Brazilian Supreme Federal Court (*Supremo Tribunal Federal* - STF / *Corte Aberta*).
     
-    Provides queryable endpoints, aggregations, and full data lineage traceability.
+    Provides queryable endpoints, analytical aggregations, survival modeling, streaming exports,
+    and full data lineage traceability.
     """,
-    version="0.1.0",
+    version="1.0.0",
     docs_url="/docs",
     redoc_url="/redoc",
 )
@@ -38,6 +41,8 @@ app.add_middleware(
 app.include_router(processes_router, prefix="/api/v1")
 app.include_router(decisions_router, prefix="/api/v1")
 app.include_router(analytics_router, prefix="/api/v1")
+app.include_router(administrative_router, prefix="/api/v1")
+app.include_router(export_router, prefix="/api/v1")
 app.include_router(lineage_router, prefix="/api/v1")
 
 
@@ -46,7 +51,7 @@ def root():
     """Root entrypoint with service metadata, documentation links, and endpoint index."""
     return {
         "title": "STF Transparency Platform API",
-        "version": "0.1.0",
+        "version": "1.0.0",
         "dashboard_url": "/dashboard",
         "docs_url": "/docs",
         "redoc_url": "/redoc",
@@ -58,6 +63,12 @@ def root():
             "yearly_trends": "/api/v1/analytics/yearly-trends",
             "decisions_by_category": "/api/v1/analytics/decisions-by-category",
             "by_region": "/api/v1/analytics/by-region",
+            "judges_caseload": "/api/v1/analytics/judges",
+            "survival_analysis": "/api/v1/analytics/survival",
+            "administrative_budget": "/api/v1/administrative/budget/summary",
+            "administrative_remuneration": "/api/v1/administrative/remuneration/summary",
+            "administrative_personnel": "/api/v1/administrative/personnel",
+            "streaming_export": "/api/v1/export/{dataset}?format={csv|jsonl|parquet}",
             "lineage_trace": "/api/v1/lineage/{entity_name}",
         },
         "description": "Open-source data engineering and analytical platform for Brazilian Supreme Court (STF) public data.",
@@ -79,7 +90,7 @@ def healthcheck():
     return {
         "status": "healthy",
         "service": "stf-transparency-platform-api",
-        "version": "0.1.0",
+        "version": "1.0.0",
     }
 
 

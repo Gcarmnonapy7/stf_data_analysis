@@ -1,11 +1,14 @@
 # 🇧🇷 STF Transparency Platform
 
-> **Open-source data engineering and analytical lakehouse for Brazilian Supreme Court (*Supremo Tribunal Federal* - STF) public data.**
+> **Open-source modern data lakehouse, survival analytics engine, and transparency platform for the Brazilian Supreme Court (*Supremo Tribunal Federal* - STF / *Corte Aberta*).**
 
-[![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
-[![License: Apache-2.0](https://img.shields.io/badge/License-Apache_2.0-green.svg)](https://opensource.org/licenses/Apache-2.0)
+[![CI/CD Pipeline](https://github.com/Gcarmnonapy7/stf_data_analysis/actions/workflows/ci.yml/badge.svg)](https://github.com/Gcarmnonapy7/stf_data_analysis/actions)
+[![Python 3.11+](https://img.shields.io/badge/python-3.11%20%7C%203.12-blue.svg)](https://www.python.org/downloads/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Engine: Polars & DuckDB](https://img.shields.io/badge/Engine-Polars%20%26%20DuckDB-orange.svg)](https://duckdb.org/)
-[![API: FastAPI](https://img.shields.io/badge/API-FastAPI-009688.svg)](https://fastapi.tiangolo.com/)
+[![Lakehouse: Delta & Iceberg](https://img.shields.io/badge/Lakehouse-Delta%20%26%20Iceberg-00adef.svg)](https://iceberg.apache.org/)
+[![API: FastAPI](https://img.shields.io/badge/API-FastAPI%201.0.0-009688.svg)](https://fastapi.tiangolo.com/)
+[![Docker: OCI Ready](https://img.shields.io/badge/Docker-Multi--stage%20Hardened-2496ED.svg)](https://www.docker.com/)
 
 ---
 
@@ -159,8 +162,8 @@ Automated quality gates execute as part of the pipeline run (`quality/runner.py`
 ### 1. Installation
 ```bash
 # Clone the repository
-git clone https://github.com/gabrielcarmonapy/sft_data.git
-cd sft_data
+git clone https://github.com/Gcarmnonapy7/stf_data_analysis.git
+cd stf_data_analysis
 
 # Set up environment and install dependencies
 make install
@@ -210,61 +213,98 @@ Core analytical queries are documented in [`analytics/sql/kpis.sql`](analytics/s
 
 ```
 stf-transparency-platform/
-├── README.md               # Project overview and documentation
-├── pyproject.toml          # Project configuration and dependencies
+├── README.md               # Project overview, architecture, and documentation
+├── pyproject.toml          # Project configuration, dependencies, and tools
 ├── requirements.txt        # Pinned virtual environment dependencies
-├── Makefile                # Automation commands
-├── Dockerfile              # Container definition
-├── docker-compose.yml      # Local dev and orchestration
+├── Makefile                # Automation CLI targets (pipeline, quality, lakehouse, etc.)
+├── Dockerfile              # Production multi-stage hardened OCI container
+├── docker-compose.yml      # Local dev and orchestration (API + Grafana)
+│
+├── .github/                # Production CI/CD automation
+│   └── workflows/
+│       ├── ci.yml          # Multi-python matrix testing & quality gate
+│       └── release.yml     # Automated GHCR OCI container publishing
 │
 ├── ingestion/              # Ingestion layer (Bronze)
-│   ├── download.py         # Resilient HTTP extractor
+│   ├── download.py         # Resilient HTTP extractor for Corte Aberta
+│   ├── crawler.py          # State-aware incremental crawler with watermarks
 │   ├── metadata.py         # SHA-256 provenance tracker
 │   └── fixtures.py         # Schema-valid synthetic sample generator
 │
+├── scripts/                # Automation scripts
+│   └── cron_crawler.sh     # Shell wrapper with flock concurrency lock for cron
+│
 ├── transformations/        # Vectorized Polars transformations (Silver)
 │   ├── processes.py        # Case normalization and deduplication
-│   ├── decisions.py        # Decision categorization
-│   └── appeals.py          # Appeals & Repercussão Geral
+│   ├── decisions.py        # Decision categorization (Monocrática/Colegiada)
+│   ├── appeals.py          # Appeals & Repercussão Geral
+│   └── administrative.py   # Personnel, payroll, and budget execution
 │
 ├── quality/                # Data quality & governance
-│   ├── runner.py           # Automated test assertions
-│   └── lineage.py          # Traceability engine
+│   ├── runner.py           # Automated test assertions & contracts (100% pass)
+│   └── lineage.py          # Traceability engine ("Where did this number come from?")
 │
 ├── pipelines/              # Master pipeline orchestration
 │   ├── runner.py           # Medallion lifecycle runner
-│   └── gold/builder.py     # Star-schema builder
+│   ├── gold/builder.py     # Star-schema dimensional lakehouse builder
+│   └── export/             # Open Lakehouse export engine
+│       └── lake_formats.py # Delta Lake (_delta_log) & Apache Iceberg v2 exporter
 │
-├── analytics/              # Analytical lakehouse layer
+├── analytics/              # Analytical lakehouse & statistical modeling
 │   ├── duckdb_client.py    # DuckDB client connection manager
-│   └── sql/kpis.sql        # Standard analytical queries
+│   ├── survival.py         # Kaplan-Meier process backlog survival estimator
+│   ├── run_analysis.py     # Executive report generator
+│   ├── sql/kpis.sql        # Standard analytical queries
+│   └── notebooks/          # Reproducible research notebooks
+│       ├── 01_exploratory_analysis.ipynb
+│       └── 02_temporal_survival_analysis.ipynb
 │
 ├── api/                    # Serving REST API (FastAPI)
-│   ├── main.py             # App entrypoint
+│   ├── main.py             # App entrypoint (v1.0.0)
 │   ├── schemas/models.py   # Pydantic models
-│   └── routes/             # Endpoints (processes, decisions, analytics, lineage)
+│   ├── templates/          # Responsive dashboard with DuckDB-Wasm & Kaplan-Meier
+│   │   └── dashboard.html
+│   └── routes/             # Endpoints
+│       ├── processes.py    # Case records queryable endpoint
+│       ├── decisions.py    # Judicial decisions endpoint
+│       ├── administrative.py# Budget, remuneration, and personnel
+│       ├── analytics.py    # KPIs, judge caseload, survival analysis, SQL console
+│       ├── export.py       # High-speed streaming (CSV, NDJSON, Parquet)
+│       └── lineage.py      # Full data lineage trace
+│
+├── dashboard/              # Visualization packages
+│   ├── grafana/            # Pre-configured Grafana dashboard & datasource
+│   └── superset/           # Apache Superset dashboards & import instructions
 │
 ├── docs/                   # Engineering documentation
 │   ├── architecture.md     # Architecture documentation
 │   ├── data_dictionary.md  # Detailed schema definitions
-│   └── methodology.md      # Neutrality principles and metric math
+│   ├── methodology.md      # Neutrality principles and metric math
+│   └── linkedin_announcement.md # Complete publication kit (PT/EN + Carousels)
 │
 ├── data/                   # Data lakehouse directory (local storage)
-│   ├── raw/                # Bronze immutable files
+│   ├── raw/                # Bronze immutable files + watermarks
 │   ├── silver/             # Silver clean Parquet tables
-│   ├── curated/            # Gold dimensional models & DuckDB database
-│   └── metadata/           # Ingestion manifests
+│   ├── curated/            # Gold dimensional models & DuckDB warehouse
+│   ├── exports/            # Exported Delta Lake & Apache Iceberg tables
+│   └── metadata/           # Ingestion manifests and watermarks
 │
-└── tests/                  # Pytest test suite
+└── tests/                  # Pytest test suite (100% passing)
     ├── test_ingestion.py
     ├── test_transformations.py
+    ├── test_administrative.py
+    ├── test_crawler.py
+    ├── test_lake_export.py
+    ├── test_survival.py
     ├── test_quality.py
-    └── test_api.py
+    ├── test_api.py
+    ├── test_export_api.py
+    └── test_analysis.py
 ```
 
 ---
 
-## 🗺️ Roadmap
+## 🗺️ Roadmap & Milestones
 
 - [x] **v0.1 — MVP Scaffolding & Core Architecture**
   - [x] Automated downloader & sample fixture generator
@@ -276,25 +316,27 @@ stf-transparency-platform/
   - [x] End-to-end data lineage engine
   - [x] FastAPI REST service with OpenAPI documentation
   - [x] Comprehensive Pytest test suite
-- [ ] **v0.2 — Data Engineering Scaling**
-  - [ ] Scheduled recurring incremental crawlers (`cron`)
-  - [ ] DuckDB Iceberg / Delta Lake export options
-  - [ ] Administrative domain data (Remuneração, Orçamento, Pessoal)
-- [ ] **v0.3 — Analytics & Notebooks**
-  - [ ] Reproducible Jupyter exploratory notebooks
-  - [ ] Temporal survival analysis on process backlog
-- [ ] **v0.4 — Advanced Serving**
-  - [ ] DuckDB WebAssembly (Wasm) client-side querying
-  - [ ] Export endpoints (Streaming CSV / JSON Lines / Parquet)
-- [ ] **v0.5 — Dashboard**
-  - [ ] Pre-configured Grafana and Superset dashboards
-- [ ] **v1.0 — Public Platform Deployment**
-  - [ ] Automated CI/CD GitHub Actions workflow
-  - [ ] Public container registry release
+- [x] **v0.2 — Data Engineering Scaling**
+  - [x] Scheduled recurring incremental crawlers (`cron` / `scripts/cron_crawler.sh`)
+  - [x] DuckDB Iceberg / Delta Lake export options (`pipelines/export/lake_formats.py`)
+  - [x] Administrative domain data (*Remuneração, Orçamento, Pessoal*)
+- [x] **v0.3 — Analytics & Notebooks**
+  - [x] Reproducible Jupyter exploratory notebooks (`01_exploratory_analysis.ipynb`, `02_temporal_survival_analysis.ipynb`)
+  - [x] Temporal survival analysis on process backlog (Kaplan-Meier estimator & backlog half-life)
+- [x] **v0.4 — Advanced Serving**
+  - [x] DuckDB WebAssembly (Wasm) client-side in-browser querying
+  - [x] Chunked streaming export endpoints (Streaming CSV, JSON Lines / NDJSON, Parquet)
+- [x] **v0.5 — Dashboard**
+  - [x] Pre-configured Grafana dashboard (Caseload, distribution, budgets)
+  - [x] Pre-configured Apache Superset dashboard export package
+- [x] **v1.0 — Public Platform Deployment**
+  - [x] Automated CI/CD GitHub Actions workflow (`ci.yml` on Python 3.11/3.12)
+  - [x] Public container registry release (`release.yml` for GHCR OCI images)
+  - [x] Multi-stage hardened production Dockerfile with non-root security
 
 ---
 
 ## 📜 License
-
-Licensed under the [Apache License, Version 2.0](LICENSE).
+ 
+Licensed under the [MIT License](LICENSE).
 

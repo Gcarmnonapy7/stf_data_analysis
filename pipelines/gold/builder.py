@@ -136,6 +136,7 @@ class GoldModelBuilder:
 
         # 8. Fact: Appeals (if available)
         rec_silver = self.silver_dir / "recursos.parquet"
+        fact_rec = None
         if rec_silver.exists():
             df_rec = pl.read_parquet(rec_silver)
             fact_rec = df_rec.with_columns([
@@ -144,10 +145,33 @@ class GoldModelBuilder:
             ])
             fact_rec.write_parquet(self.curated_dir / "fact_appeals.parquet", compression="zstd")
 
+        # 9. Dimension & Facts: Administrative Domain (Pessoal, Remuneração, Orçamento)
+        dim_personnel = None
+        pes_silver = self.silver_dir / "pessoal.parquet"
+        if pes_silver.exists():
+            df_pes = pl.read_parquet(pes_silver)
+            dim_personnel = df_pes.with_columns([
+                pl.col("data_admissao").dt.strftime("%Y%m%d").cast(pl.Int64, strict=False).alias("date_admissao_key"),
+                pl.int_range(1, pl.len() + 1).alias("personnel_key"),
+            ])
+            dim_personnel.write_parquet(self.curated_dir / "dim_personnel.parquet", compression="zstd")
+
+        fact_rem = None
+        rem_silver = self.silver_dir / "remuneracao.parquet"
+        if rem_silver.exists():
+            fact_rem = pl.read_parquet(rem_silver)
+            fact_rem.write_parquet(self.curated_dir / "fact_remuneration.parquet", compression="zstd")
+
+        fact_budget = None
+        orc_silver = self.silver_dir / "orcamento.parquet"
+        if orc_silver.exists():
+            fact_budget = pl.read_parquet(orc_silver)
+            fact_budget.write_parquet(self.curated_dir / "fact_budget.parquet", compression="zstd")
+
         # Populate DuckDB Catalog
         self.register_duckdb_views()
 
-        return {
+        models = {
             "dim_date": dim_date,
             "dim_process_type": dim_proc_type,
             "dim_rapporteur": all_relatores,
@@ -156,6 +180,16 @@ class GoldModelBuilder:
             "fact_processes": fact_proc,
             "fact_decisions": fact_dec,
         }
+        if fact_rec is not None:
+            models["fact_appeals"] = fact_rec
+        if dim_personnel is not None:
+            models["dim_personnel"] = dim_personnel
+        if fact_rem is not None:
+            models["fact_remuneration"] = fact_rem
+        if fact_budget is not None:
+            models["fact_budget"] = fact_budget
+
+        return models
 
     def register_duckdb_views(self) -> None:
         """Registers all Parquet files as persistent views/tables in DuckDB."""

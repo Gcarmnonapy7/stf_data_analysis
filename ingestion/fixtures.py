@@ -240,10 +240,180 @@ def generate_fixtures(
         writer.writeheader()
         writer.writerows(rg_data)
 
+    # 5. Generate Administrative Personnel (Pessoal)
+    pes_dir = out_dir / "pessoal"
+    pes_dir.mkdir(parents=True, exist_ok=True)
+    pes_file = pes_dir / "pessoal_stf.csv"
+    pessoal_data = []
+
+    # 11 Ministers + Staff
+    for i, ministro in enumerate(MINISTROS, 1):
+        pessoal_data.append({
+            "matricula_hash": f"MAG-{i:03d}",
+            "nome_anonimizado": ministro,
+            "cargo": "Ministro do STF",
+            "cargo_tipo": "Magistratura",
+            "lotacao": f"Gabinete {ministro}",
+            "situacao_funcional": "Ativo",
+            "data_admissao": f"{2015 + (i % 8)}-02-01",
+        })
+
+    cargos_staff = [
+        ("Analista Judiciário - Área Judiciária", "Efetivo", 15000),
+        ("Analista Judiciário - Tecnologia da Informação", "Efetivo", 16000),
+        ("Técnico Judiciário - Área Administrativa", "Efetivo", 9500),
+        ("Assessor de Ministro (CJ-3)", "Comissionado", 18000),
+        ("Chefe de Gabinete (CJ-4)", "Comissionado", 21000),
+        ("Secretário de Tribunal (CJ-4)", "Comissionado", 22000),
+    ]
+    lotacoes_staff = [
+        "Secretaria Judiciária",
+        "Secretaria de Tecnologia da Informação",
+        "Secretaria de Gestão Estratégica",
+        "Gabinete da Presidência",
+        "Assessoria de Comunicação Social",
+        "Escola de Magistratura e Servidores",
+    ]
+
+    for i in range(1, 100):
+        cargo, cargo_tipo, _ = random.choice(cargos_staff)
+        lotacao = random.choice(lotacoes_staff)
+        admissao = random_date(2005, 2024)
+        pessoal_data.append({
+            "matricula_hash": f"SERV-{i:03d}",
+            "nome_anonimizado": f"Servidor(a) STF-{i:03d}",
+            "cargo": cargo,
+            "cargo_tipo": cargo_tipo,
+            "lotacao": lotacao,
+            "situacao_funcional": random.choice(["Ativo", "Ativo", "Ativo", "Cedido"]),
+            "data_admissao": admissao.isoformat(),
+        })
+
+    with open(pes_file, "w", newline="", encoding="utf-8") as f:
+        writer = csv.DictWriter(f, fieldnames=list(pessoal_data[0].keys()))
+        writer.writeheader()
+        writer.writerows(pessoal_data)
+
+    # 6. Generate Payroll / Remuneration (Remuneração)
+    rem_dir = out_dir / "remuneracao"
+    rem_dir.mkdir(parents=True, exist_ok=True)
+    rem_file = rem_dir / "remuneracao_stf.csv"
+    rem_data = []
+    rem_counter = 1
+
+    # Generate payroll records across sampled months/years
+    years = range(2018, 2027)
+    sample_personnel = pessoal_data[:30]  # Representative cohort
+    teto_constitucional = 44008.52  # Constitutional ceiling
+
+    for yr in years:
+        for m in [3, 6, 9, 12]:  # Quarterly payroll snapshots
+            for p in sample_personnel:
+                if p["cargo_tipo"] == "Magistratura":
+                    subsidio = 44008.52
+                    paradigma = 0.0
+                    vantagens = 0.0
+                    indenizacoes = round(random.uniform(1500, 4500), 2)
+                    descontos = round(subsidio * 0.275 + 4500, 2)
+                    abate_teto = 0.0
+                    liquida = round(subsidio + indenizacoes - descontos, 2)
+                elif p["cargo_tipo"] == "Comissionado":
+                    subsidio = 0.0
+                    paradigma = round(random.uniform(14000, 20000), 2)
+                    vantagens = round(random.uniform(2000, 4000), 2)
+                    indenizacoes = round(random.uniform(1200, 2000), 2)
+                    bruto = paradigma + vantagens
+                    abate_teto = max(0.0, round(bruto - teto_constitucional, 2))
+                    descontos = round(bruto * 0.22 + 2500, 2)
+                    liquida = round(bruto + indenizacoes - descontos - abate_teto, 2)
+                else:
+                    subsidio = 0.0
+                    paradigma = round(random.uniform(9000, 16000), 2)
+                    vantagens = round(random.uniform(1000, 3000), 2)
+                    indenizacoes = round(random.uniform(1100, 1800), 2)
+                    bruto = paradigma + vantagens
+                    abate_teto = 0.0
+                    descontos = round(bruto * 0.18 + 1800, 2)
+                    liquida = round(bruto + indenizacoes - descontos, 2)
+
+                rem_data.append({
+                    "remuneracao_id": f"REM-{rem_counter}",
+                    "matricula_hash": p["matricula_hash"],
+                    "competencia_ano": yr,
+                    "competencia_mes": m,
+                    "cargo": p["cargo"],
+                    "cargo_tipo": p["cargo_tipo"],
+                    "remuneracao_paradigma": paradigma,
+                    "vantagens_pessoais": vantagens,
+                    "subsidio": subsidio,
+                    "indenizacoes": indenizacoes,
+                    "previdencia_e_ir": descontos,
+                    "abate_teto": abate_teto,
+                    "remuneracao_liquida": liquida,
+                })
+                rem_counter += 1
+
+    with open(rem_file, "w", newline="", encoding="utf-8") as f:
+        writer = csv.DictWriter(f, fieldnames=list(rem_data[0].keys()))
+        writer.writeheader()
+        writer.writerows(rem_data)
+
+    # 7. Generate Budget Execution (Orçamento)
+    orc_dir = out_dir / "orcamento"
+    orc_dir.mkdir(parents=True, exist_ok=True)
+    orc_file = orc_dir / "orcamento_stf.csv"
+    orc_data = []
+    orc_counter = 1
+
+    programas = [
+        ("0035 - Prestação Jurisdicional no Supremo Tribunal Federal", [
+            ("Julgamento de Processos Judiciais", "Pessoal e Encargos Sociais", 650000000),
+            ("Julgamento de Processos Judiciais", "Outras Despesas Correntes", 120000000),
+            ("Modernização de Soluções de TI e IA Judiciária", "Investimentos", 45000000),
+        ]),
+        ("0570 - Gestão e Manutenção do Poder Judiciário", [
+            ("Administração da Infraestrutura e Manutenção Predial", "Outras Despesas Correntes", 85000000),
+            ("Capacitação Continuada e Escola Judicial", "Outras Despesas Correntes", 12000000),
+            ("Assistência Médica e Odontológica aos Servidores", "Outras Despesas Correntes", 35000000),
+        ]),
+    ]
+
+    for yr in range(2018, 2027):
+        inflation_factor = 1.0 + (yr - 2018) * 0.045
+        for prog_nome, acoes in programas:
+            for acao_nome, elemento, base_dotacao in acoes:
+                dotacao_inicial = round(base_dotacao * inflation_factor, 2)
+                dotacao_atualizada = round(dotacao_inicial * random.uniform(0.98, 1.05), 2)
+                empenhado = round(dotacao_atualizada * random.uniform(0.92, 0.98), 2)
+                liquidado = round(empenhado * random.uniform(0.90, 0.97), 2)
+                pago = round(liquidado * random.uniform(0.92, 0.99), 2)
+
+                orc_data.append({
+                    "orcamento_id": f"ORC-{orc_counter}",
+                    "ano_exercicio": yr,
+                    "programa_trabalho": prog_nome,
+                    "acao_orcamentaria": acao_nome,
+                    "elemento_despesa": elemento,
+                    "dotacao_inicial": dotacao_inicial,
+                    "dotacao_atualizada": dotacao_atualizada,
+                    "empenhado": empenhado,
+                    "liquidado": liquidado,
+                    "pago": pago,
+                })
+                orc_counter += 1
+
+    with open(orc_file, "w", newline="", encoding="utf-8") as f:
+        writer = csv.DictWriter(f, fieldnames=list(orc_data[0].keys()))
+        writer.writeheader()
+        writer.writerows(orc_data)
+
     return {
         "processos": proc_file,
         "decisoes": dec_file,
         "recursos": rec_file,
         "repercussao_geral": rg_file,
+        "pessoal": pes_file,
+        "remuneracao": rem_file,
+        "orcamento": orc_file,
     }
 

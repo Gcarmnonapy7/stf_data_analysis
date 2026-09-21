@@ -1,0 +1,105 @@
+{
+  "version": "1.0.0",
+  "dashboard_title": "STF Analytics & Transparência Judicial",
+  "description": "Painel analítico do Supremo Tribunal Federal (Corte Aberta 2018 - 2026)",
+  "css": "",
+  "slug": "stf-transparency",
+  "certified_by": "STF Transparency Platform Team",
+  "certification_details": "Dados auditados e validados pelo DuckDB Lakehouse",
+  "published": true,
+  "datasets": [
+    {
+      "table_name": "fact_processes",
+      "database_name": "stf_warehouse",
+      "schema": "main",
+      "columns": [
+        { "column_name": "process_id", "type": "VARCHAR", "is_dttm": false },
+        { "column_name": "classe_sigla", "type": "VARCHAR", "is_dttm": false },
+        { "column_name": "relator", "type": "VARCHAR", "is_dttm": false },
+        { "column_name": "uf_origem", "type": "VARCHAR", "is_dttm": false },
+        { "column_name": "situacao", "type": "VARCHAR", "is_dttm": false },
+        { "column_name": "data_distribuicao", "type": "DATE", "is_dttm": true },
+        { "column_name": "ano_distribuicao", "type": "INTEGER", "is_dttm": false }
+      ],
+      "metrics": [
+        { "metric_name": "count", "expression": "COUNT(*)" },
+        { "metric_name": "active_cases", "expression": "COUNT(CASE WHEN situacao = 'EM TRAMITAÇÃO' THEN 1 END)" },
+        { "metric_name": "disposed_cases", "expression": "COUNT(CASE WHEN situacao IN ('BAIXADO', 'JULGADO') THEN 1 END)" }
+      ]
+    },
+    {
+      "table_name": "fact_decisions",
+      "database_name": "stf_warehouse",
+      "schema": "main",
+      "columns": [
+        { "column_name": "decisao_id", "type": "VARCHAR", "is_dttm": false },
+        { "column_name": "process_id", "type": "VARCHAR", "is_dttm": false },
+        { "column_name": "relator", "type": "VARCHAR", "is_dttm": false },
+        { "column_name": "categoria_decisao", "type": "VARCHAR", "is_dttm": false },
+        { "column_name": "tipo_decisao", "type": "VARCHAR", "is_dttm": false },
+        { "column_name": "resultado", "type": "VARCHAR", "is_dttm": false },
+        { "column_name": "data_decisao", "type": "DATE", "is_dttm": true }
+      ],
+      "metrics": [
+        { "metric_name": "count", "expression": "COUNT(*)" },
+        { "metric_name": "monocratic_ratio", "expression": "COUNT(CASE WHEN categoria_decisao = 'MONOCRATICA' THEN 1 END) * 100.0 / COUNT(*)" }
+      ]
+    },
+    {
+      "table_name": "fact_budget",
+      "database_name": "stf_warehouse",
+      "schema": "main",
+      "columns": [
+        { "column_name": "ano_exercicio", "type": "INTEGER", "is_dttm": false },
+        { "column_name": "dotacao_atualizada", "type": "DOUBLE", "is_dttm": false },
+        { "column_name": "liquidado", "type": "DOUBLE", "is_dttm": false },
+        { "column_name": "pago", "type": "DOUBLE", "is_dttm": false }
+      ],
+      "metrics": [
+        { "metric_name": "total_dotacao", "expression": "SUM(dotacao_atualizada)" },
+        { "metric_name": "total_liquidado", "expression": "SUM(liquidado)" }
+      ]
+    }
+  ],
+  "slices": [
+    {
+      "slice_name": "Volume Anual de Distribuição & Baixa (2018 - 2026)",
+      "viz_type": "echarts_timeseries_bar",
+      "datasource": "fact_processes",
+      "params": {
+        "x_axis": "ano_distribuicao",
+        "metrics": ["count", "disposed_cases", "active_cases"],
+        "groupby": []
+      }
+    },
+    {
+      "slice_name": "Distribuição de Caseload por Ministro Relator",
+      "viz_type": "echarts_timeseries_bar",
+      "datasource": "fact_processes",
+      "params": {
+        "x_axis": "relator",
+        "metrics": ["active_cases", "disposed_cases"],
+        "orientation": "horizontal"
+      }
+    },
+    {
+      "slice_name": "Perfil Decisório: Monocrática vs. Colegiada",
+      "viz_type": "pie",
+      "datasource": "fact_decisions",
+      "params": {
+        "groupby": ["categoria_decisao"],
+        "metric": "count"
+      }
+    },
+    {
+      "slice_name": "Evolução da Execução Orçamentária Anual",
+      "viz_type": "echarts_timeseries_line",
+      "datasource": "fact_budget",
+      "params": {
+        "x_axis": "ano_exercicio",
+        "metrics": ["total_dotacao", "total_liquidado"]
+      }
+    }
+  ]
+}
+

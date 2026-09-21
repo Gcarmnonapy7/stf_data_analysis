@@ -4,11 +4,11 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "stf-transparency-platform"
-version = "0.1.0"
+version = "1.0.0"
 description = "Open-source data engineering and analytics platform for Brazilian Supreme Federal Court (STF) public data."
 readme = "README.md"
 requires-python = ">=3.10"
-license = {text = "Apache-2.0"}
+license = {text = "MIT"}
 authors = [
     {name = "STF Transparency Platform Contributors"}
 ]
