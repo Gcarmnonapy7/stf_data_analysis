@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   api:
     build:
@@ -10,6 +8,8 @@ services:
       - "8000:8000"
     volumes:
       - ./data:/app/data
+      - ./api:/app/api
+      - ./analytics:/app/analytics
     environment:
       - PYTHONUNBUFFERED=1
     restart: unless-stopped
