@@ -14,7 +14,15 @@ def test_root():
     data = response.json()
     assert "docs_url" in data
     assert data["docs_url"] == "/docs"
+    assert "dashboard_url" in data
     assert "endpoints" in data
+
+
+def test_dashboard_endpoint():
+    response = client.get("/dashboard")
+    assert response.status_code == 200
+    assert "STF Transparency Platform" in response.text
+    assert "yearlyChart" in response.text
 
 
 def test_healthcheck():

@@ -1,0 +1,191 @@
+{
+  "annotations": {
+    "list": []
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": null,
+  "links": [],
+  "liveNow": false,
+  "panels": [
+    {
+      "collapsed": false,
+      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 0 },
+      "id": 100,
+      "title": "🏛️ STF Transparency Platform — Overview",
+      "type": "row"
+    },
+    {
+      "id": 1,
+      "title": "Total de Processos Ingeridos",
+      "type": "stat",
+      "gridPos": { "h": 4, "w": 6, "x": 0, "y": 1 },
+      "options": {
+        "reduceOptions": { "values": false, "calcs": ["lastNotNull"] },
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto"
+      },
+      "pluginVersion": "10.0.0",
+      "targets": [
+        {
+          "datasource": { "type": "yesoreyeram-infinity-datasource", "uid": "STF-API" },
+          "type": "json",
+          "source": "url",
+          "url": "http://api:8000/api/v1/analytics/overview",
+          "root_selector": "total_processes",
+          "format": "table"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "title": "Total de Decisões Proferidas",
+      "type": "stat",
+      "gridPos": { "h": 4, "w": 6, "x": 6, "y": 1 },
+      "options": {
+        "reduceOptions": { "values": false, "calcs": ["lastNotNull"] },
+        "colorMode": "value",
+        "graphMode": "none"
+      },
+      "targets": [
+        {
+          "datasource": { "type": "yesoreyeram-infinity-datasource", "uid": "STF-API" },
+          "type": "json",
+          "source": "url",
+          "url": "http://api:8000/api/v1/analytics/overview",
+          "root_selector": "total_decisions",
+          "format": "table"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "title": "Acervo Ativo (Em Tramitação)",
+      "type": "stat",
+      "gridPos": { "h": 4, "w": 6, "x": 12, "y": 1 },
+      "options": {
+        "reduceOptions": { "values": false, "calcs": ["lastNotNull"] },
+        "colorMode": "value",
+        "graphMode": "none"
+      },
+      "targets": [
+        {
+          "datasource": { "type": "yesoreyeram-infinity-datasource", "uid": "STF-API" },
+          "type": "json",
+          "source": "url",
+          "url": "http://api:8000/api/v1/analytics/overview",
+          "root_selector": "active_processes",
+          "format": "table"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "title": "Total de Recursos Interpostos",
+      "type": "stat",
+      "gridPos": { "h": 4, "w": 6, "x": 18, "y": 1 },
+      "options": {
+        "reduceOptions": { "values": false, "calcs": ["lastNotNull"] },
+        "colorMode": "value",
+        "graphMode": "none"
+      },
+      "targets": [
+        {
+          "datasource": { "type": "yesoreyeram-infinity-datasource", "uid": "STF-API" },
+          "type": "json",
+          "source": "url",
+          "url": "http://api:8000/api/v1/analytics/overview",
+          "root_selector": "total_appeals",
+          "format": "table"
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "title": "Evolução Histórica de Processos por Ano",
+      "type": "barchart",
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 5 },
+      "options": {
+        "orientation": "auto",
+        "showValue": "auto",
+        "groupWidth": 0.7,
+        "barWidth": 0.97
+      },
+      "targets": [
+        {
+          "datasource": { "type": "yesoreyeram-infinity-datasource", "uid": "STF-API" },
+          "type": "json",
+          "source": "url",
+          "url": "http://api:8000/api/v1/analytics/yearly-trends",
+          "format": "table"
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "title": "Perfil Decisório: Monocrática vs. Colegiada",
+      "type": "piechart",
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 5 },
+      "options": {
+        "pieType": "donut",
+        "reduceOptions": { "values": true }
+      },
+      "targets": [
+        {
+          "datasource": { "type": "yesoreyeram-infinity-datasource", "uid": "STF-API" },
+          "type": "json",
+          "source": "url",
+          "url": "http://api:8000/api/v1/analytics/decisions-by-category",
+          "format": "table"
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "title": "Top 10 Classes Processuais",
+      "type": "barchart",
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 13 },
+      "options": {
+        "orientation": "horizontal",
+        "showValue": "auto"
+      },
+      "targets": [
+        {
+          "datasource": { "type": "yesoreyeram-infinity-datasource", "uid": "STF-API" },
+          "type": "json",
+          "source": "url",
+          "url": "http://api:8000/api/v1/analytics/top-classes",
+          "format": "table"
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "title": "Distribuição Geográfica por Região",
+      "type": "barchart",
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 13 },
+      "options": {
+        "orientation": "auto",
+        "showValue": "auto"
+      },
+      "targets": [
+        {
+          "datasource": { "type": "yesoreyeram-infinity-datasource", "uid": "STF-API" },
+          "type": "json",
+          "source": "url",
+          "url": "http://api:8000/api/v1/analytics/by-region",
+          "format": "table"
+        }
+      ]
+    }
+  ],
+  "schemaVersion": 38,
+  "style": "dark",
+  "tags": ["STF", "Corte Aberta", "Analytics", "Judiciário"],
+  "time": { "from": "now-6h", "to": "now" },
+  "timezone": "browser",
+  "title": "STF Analytics & Transparência",
+  "version": 1
+}

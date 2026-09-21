@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Painel de Transparência — STF Analytics</title>
+  <!-- Tailwind CSS & Chart.js via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+    body { font-family: 'Inter', sans-serif; }
+  </style>
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen">
+
+  <!-- Top Navigation Bar -->
+  <header class="border-b border-slate-800 bg-slate-950/80 backdrop-blur sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <div class="flex items-center space-x-3">
+        <div class="w-9 h-9 rounded-lg bg-blue-600 flex items-center justify-center font-bold text-white shadow-lg shadow-blue-500/30">
+          ⚖️
+        </div>
+        <div>
+          <h1 class="text-base font-bold tracking-tight text-white flex items-center gap-2">
+            STF Transparency Platform
+            <span class="text-xs font-medium px-2 py-0.5 rounded-full bg-blue-900/60 text-blue-300 border border-blue-700">v0.1.0</span>
+          </h1>
+          <p class="text-xs text-slate-400">Camada Analítica & Engenharia de Dados sobre Corte Aberta</p>
+        </div>
+      </div>
+
+      <div class="flex items-center space-x-3">
+        <button onclick="openLineageModal()" class="text-xs px-3 py-1.5 rounded-md bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 flex items-center gap-1.5 transition">
+          <i class="fa-solid fa-code-branch text-emerald-400"></i>
+          <span>Linhagem de Dados</span>
+        </button>
+        <a href="/docs" target="_blank" class="text-xs px-3 py-1.5 rounded-md bg-blue-600 hover:bg-blue-500 text-white font-medium flex items-center gap-1.5 transition shadow-sm">
+          <i class="fa-solid fa-book"></i>
+          <span>Documentação API</span>
+        </a>
+        <a href="https://github.com/Gcarmnonapy7/stf_data_analysis" target="_blank" class="text-xs px-3 py-1.5 rounded-md bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 flex items-center gap-1.5 transition">
+          <i class="fa-brands fa-github"></i>
+          <span>GitHub</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+
+    <!-- KPI Metric Cards Grid -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div class="bg-slate-800/60 border border-slate-700/60 rounded-xl p-5 shadow-sm">
+        <div class="flex items-center justify-between">
+          <span class="text-xs font-medium uppercase tracking-wider text-slate-400">Total de Processos</span>
+          <span class="p-2 rounded-lg bg-blue-500/10 text-blue-400"><i class="fa-solid fa-folder-tree"></i></span>
+        </div>
+        <div class="mt-2 flex items-baseline gap-2">
+          <span id="kpi-processes" class="text-2xl font-bold text-white tracking-tight">--</span>
+          <span class="text-xs text-emerald-400">✓ Ingeridos</span>
+        </div>
+      </div>
+
+      <div class="bg-slate-800/60 border border-slate-700/60 rounded-xl p-5 shadow-sm">
+        <div class="flex items-center justify-between">
+          <span class="text-xs font-medium uppercase tracking-wider text-slate-400">Decisões Proferidas</span>
+          <span class="p-2 rounded-lg bg-emerald-500/10 text-emerald-400"><i class="fa-solid fa-gavel"></i></span>
+        </div>
+        <div class="mt-2 flex items-baseline gap-2">
+          <span id="kpi-decisions" class="text-2xl font-bold text-white tracking-tight">--</span>
+          <span class="text-xs text-emerald-400">✓ Normalizadas</span>
+        </div>
+      </div>
+
+      <div class="bg-slate-800/60 border border-slate-700/60 rounded-xl p-5 shadow-sm">
+        <div class="flex items-center justify-between">
+          <span class="text-xs font-medium uppercase tracking-wider text-slate-400">Acervo em Tramitação</span>
+          <span class="p-2 rounded-lg bg-amber-500/10 text-amber-400"><i class="fa-solid fa-hourglass-half"></i></span>
+        </div>
+        <div class="mt-2 flex items-baseline gap-2">
+          <span id="kpi-active" class="text-2xl font-bold text-amber-400 tracking-tight">--</span>
+          <span class="text-xs text-slate-400">casos ativos</span>
+        </div>
+      </div>
+
+      <div class="bg-slate-800/60 border border-slate-700/60 rounded-xl p-5 shadow-sm">
+        <div class="flex items-center justify-between">
+          <span class="text-xs font-medium uppercase tracking-wider text-slate-400">Recursos Interpostos</span>
+          <span class="p-2 rounded-lg bg-purple-500/10 text-purple-400"><i class="fa-solid fa-arrow-rotate-left"></i></span>
+        </div>
+        <div class="mt-2 flex items-baseline gap-2">
+          <span id="kpi-appeals" class="text-2xl font-bold text-white tracking-tight">--</span>
+          <span class="text-xs text-purple-400">Agravos / Embargos</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Charts Grid (2x2) -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+      <!-- Chart 1: Yearly Intake -->
+      <div class="bg-slate-800/50 border border-slate-700/60 rounded-xl p-5 shadow-sm">
+        <div class="flex items-center justify-between mb-4">
+          <h2 class="text-sm font-semibold text-slate-200 flex items-center gap-2">
+            <i class="fa-solid fa-chart-column text-blue-400"></i>
+            Evolução Anual de Distribuição & Baixa
+          </h2>
+          <span class="text-xs text-slate-400">Série Histórica</span>
+        </div>
+        <div class="h-64">
+          <canvas id="yearlyChart"></canvas>
+        </div>
+      </div>
+
+      <!-- Chart 2: Monocratic vs Collegiate -->
+      <div class="bg-slate-800/50 border border-slate-700/60 rounded-xl p-5 shadow-sm">
+        <div class="flex items-center justify-between mb-4">
+          <h2 class="text-sm font-semibold text-slate-200 flex items-center gap-2">
+            <i class="fa-solid fa-chart-pie text-emerald-400"></i>
+            Perfil Decisório: Monocrática vs. Colegiada
+          </h2>
+          <span class="text-xs text-slate-400">Formato da Decisão</span>
+        </div>
+        <div class="h-64 flex items-center justify-center">
+          <canvas id="categoryChart"></canvas>
+        </div>
+      </div>
+
+      <!-- Chart 3: Top Classes -->
+      <div class="bg-slate-800/50 border border-slate-700/60 rounded-xl p-5 shadow-sm">
+        <div class="flex items-center justify-between mb-4">
+          <h2 class="text-sm font-semibold text-slate-200 flex items-center gap-2">
+            <i class="fa-solid fa-scale-balanced text-amber-400"></i>
+            Top 10 Classes Processuais
+          </h2>
+          <span class="text-xs text-slate-400">Volume</span>
+        </div>
+        <div class="h-64">
+          <canvas id="classesChart"></canvas>
+        </div>
+      </div>
+
+      <!-- Chart 4: Cases by Region -->
+      <div class="bg-slate-800/50 border border-slate-700/60 rounded-xl p-5 shadow-sm">
+        <div class="flex items-center justify-between mb-4">
+          <h2 class="text-sm font-semibold text-slate-200 flex items-center gap-2">
+            <i class="fa-solid fa-earth-americas text-purple-400"></i>
+            Distribuição por Macro-Região
+          </h2>
+          <span class="text-xs text-slate-400">Origem Federativa</span>
+        </div>
+        <div class="h-64">
+          <canvas id="regionChart"></canvas>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Interactive Case Explorer Table -->
+    <div class="bg-slate-800/50 border border-slate-700/60 rounded-xl p-5 shadow-sm">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4">
+        <div>
+          <h2 class="text-sm font-semibold text-slate-200 flex items-center gap-2">
+            <i class="fa-solid fa-list-check text-blue-400"></i>
+            Explorador de Processos Judiciais
+          </h2>
+          <p class="text-xs text-slate-400">Amostra paginada em tempo real extraída do DuckDB Lakehouse</p>
+        </div>
+        <div class="flex items-center gap-2">
+          <input id="tableSearch" type="text" placeholder="Filtrar por sigla, relator, UF..." oninput="filterTable()" class="bg-slate-900 border border-slate-700 rounded-lg px-3 py-1.5 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-1 focus:ring-blue-500">
+        </div>
+      </div>
+
+      <div class="overflow-x-auto rounded-lg border border-slate-700/60">
+        <table class="min-w-full divide-y divide-slate-700 text-left text-xs">
+          <thead class="bg-slate-900/80 text-slate-300 font-semibold">
+            <tr>
+              <th class="px-4 py-3">ID Processo</th>
+              <th class="px-4 py-3">Classe</th>
+              <th class="px-4 py-3">UF</th>
+              <th class="px-4 py-3">Relator</th>
+              <th class="px-4 py-3">Data Distribuição</th>
+              <th class="px-4 py-3">Situação</th>
+            </tr>
+          </thead>
+          <tbody id="processesTableBody" class="divide-y divide-slate-800 bg-slate-900/30 text-slate-300">
+            <tr>
+              <td colspan="6" class="px-4 py-6 text-center text-slate-500">Carregando processos...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Data Lineage Modal: 'De onde veio esse número?' -->
+  <div id="lineageModal" class="fixed inset-0 z-50 hidden bg-black/70 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-slate-900 border border-slate-700 rounded-2xl max-w-2xl w-full p-6 shadow-2xl space-y-4">
+      <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+        <div class="flex items-center gap-2">
+          <span class="p-1.5 rounded-md bg-emerald-500/10 text-emerald-400"><i class="fa-solid fa-code-branch"></i></span>
+          <h3 class="text-sm font-bold text-white">Rastreabilidade & Linhagem de Dados (Provenance)</h3>
+        </div>
+        <button onclick="closeLineageModal()" class="text-slate-400 hover:text-white text-base"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+
+      <div class="text-xs text-slate-300 space-y-3" id="lineageModalBody">
+        <p class="text-slate-400">Carregando linhagem dos dados do STF...</p>
+      </div>
+
+      <div class="pt-3 border-t border-slate-800 flex justify-end">
+        <button onclick="closeLineageModal()" class="text-xs px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-lg font-medium transition">
+          Fechar
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Dashboard JavaScript Logic -->
+  <script>
+    let allProcesses = [];
+
+    async function loadDashboard() {
+      try {
+        // 1. Load Overview KPIs
+        const kpiRes = await fetch('/api/v1/analytics/overview');
+        if (kpiRes.ok) {
+          const kpis = await kpiRes.json();
+          document.getElementById('kpi-processes').textContent = kpis.total_processes.toLocaleString();
+          document.getElementById('kpi-decisions').textContent = kpis.total_decisions.toLocaleString();
+          document.getElementById('kpi-active').textContent = kpis.active_processes.toLocaleString();
+          document.getElementById('kpi-appeals').textContent = kpis.total_appeals.toLocaleString();
+        }
+
+        // 2. Load Yearly Trends
+        const yearlyRes = await fetch('/api/v1/analytics/yearly-trends');
+        if (yearlyRes.ok) {
+          const yearly = await yearlyRes.json();
+          renderYearlyChart(yearly);
+        }
+
+        // 3. Load Decision Categories
+        const catRes = await fetch('/api/v1/analytics/decisions-by-category');
+        if (catRes.ok) {
+          const cats = await catRes.json();
+          renderCategoryChart(cats);
+        }
+
+        // 4. Load Top Classes
+        const classRes = await fetch('/api/v1/analytics/top-classes');
+        if (classRes.ok) {
+          const classes = await classRes.json();
+          renderClassesChart(classes);
+        }
+
+        // 5. Load Region Distribution
+        const regionRes = await fetch('/api/v1/analytics/by-region');
+        if (regionRes.ok) {
+          const regions = await regionRes.json();
+          renderRegionChart(regions);
+        }
+
+        // 6. Load Process Table
+        const procRes = await fetch('/api/v1/processes?limit=30');
+        if (procRes.ok) {
+          const procData = await procRes.json();
+          allProcesses = procData.items || [];
+          renderTable(allProcesses);
+        }
+
+      } catch (err) {
+        console.error('Error loading dashboard data:', err);
+      }
+    }
+
+    function renderYearlyChart(data) {
+      const ctx = document.getElementById('yearlyChart').getContext('2d');
+      new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: data.map(d => d.ano),
+          datasets: [
+            {
+              label: 'Total Distribuídos',
+              data: data.map(d => d.total_distribuidos),
+              backgroundColor: '#3b82f6',
+              borderRadius: 4
+            },
+            {
+              label: 'Baixados',
+              data: data.map(d => d.baixados),
+              backgroundColor: '#10b981',
+              borderRadius: 4
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { labels: { color: '#94a3b8', font: { size: 11 } } }
+          },
+          scales: {
+            x: { ticks: { color: '#94a3b8' }, grid: { color: '#334155' } },
+            y: { ticks: { color: '#94a3b8' }, grid: { color: '#334155' } }
+          }
+        }
+      });
+    }
+
+    function renderCategoryChart(data) {
+      const ctx = document.getElementById('categoryChart').getContext('2d');
+      new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+          labels: data.map(d => d.categoria_decisao),
+          datasets: [{
+            data: data.map(d => d.total),
+            backgroundColor: ['#10b981', '#3b82f6', '#f59e0b', '#8b5cf6'],
+            borderColor: '#0f172a',
+            borderWidth: 2
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { position: 'bottom', labels: { color: '#94a3b8', font: { size: 11 } } }
+          }
+        }
+      });
+    }
+
+    function renderClassesChart(data) {
+      const ctx = document.getElementById('classesChart').getContext('2d');
+      new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: data.map(d => d.classe_sigla),
+          datasets: [{
+            label: 'Total de Processos',
+            data: data.map(d => d.total_acoes),
+            backgroundColor: '#f59e0b',
+            borderRadius: 4
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          indexAxis: 'y',
+          plugins: { legend: { display: false } },
+          scales: {
+            x: { ticks: { color: '#94a3b8' }, grid: { color: '#334155' } },
+            y: { ticks: { color: '#94a3b8' }, grid: { display: false } }
+          }
+        }
+      });
+    }
+
+    function renderRegionChart(data) {
+      // Group by regiao
+      const grouped = {};
+      data.forEach(d => {
+        grouped[d.regiao] = (grouped[d.regiao] || 0) + d.total_processos;
+      });
+      const labels = Object.keys(grouped);
+      const values = Object.values(grouped);
+
+      const ctx = document.getElementById('regionChart').getContext('2d');
+      new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: labels,
+          datasets: [{
+            label: 'Processos',
+            data: values,
+            backgroundColor: '#a855f7',
+            borderRadius: 4
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { display: false } },
+          scales: {
+            x: { ticks: { color: '#94a3b8' }, grid: { color: '#334155' } },
+            y: { ticks: { color: '#94a3b8' }, grid: { color: '#334155' } }
+          }
+        }
+      });
+    }
+
+    function renderTable(items) {
+      const tbody = document.getElementById('processesTableBody');
+      if (!items || items.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="6" class="px-4 py-4 text-center text-slate-500">Nenhum processo encontrado.</td></tr>';
+        return;
+      }
+      tbody.innerHTML = items.map(p => {
+        const isEmTramitacao = p.situacao.includes('TRAMITA');
+        const badgeColor = isEmTramitacao ? 'bg-amber-900/60 text-amber-300 border-amber-700' : 'bg-emerald-900/60 text-emerald-300 border-emerald-700';
+        return `
+          <tr class="hover:bg-slate-800/40 transition">
+            <td class="px-4 py-2.5 font-medium text-slate-200">${p.process_id}</td>
+            <td class="px-4 py-2.5"><span class="px-2 py-0.5 rounded text-[11px] font-semibold bg-slate-800 text-slate-300">${p.classe_sigla}</span></td>
+            <td class="px-4 py-2.5 text-slate-400 font-mono">${p.uf_origem || '-'}</td>
+            <td class="px-4 py-2.5 text-slate-300">${p.relator || '-'}</td>
+            <td class="px-4 py-2.5 text-slate-400">${p.data_distribuicao || '-'}</td>
+            <td class="px-4 py-2.5"><span class="px-2 py-0.5 rounded-full text-[10px] font-medium border ${badgeColor}">${p.situacao}</span></td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    function filterTable() {
+      const query = document.getElementById('tableSearch').value.toLowerCase();
+      const filtered = allProcesses.filter(p => 
+        (p.process_id && p.process_id.toLowerCase().includes(query)) ||
+        (p.classe_sigla && p.classe_sigla.toLowerCase().includes(query)) ||
+        (p.relator && p.relator.toLowerCase().includes(query)) ||
+        (p.uf_origem && p.uf_origem.toLowerCase().includes(query))
+      );
+      renderTable(filtered);
+    }
+
+    async function openLineageModal() {
+      document.getElementById('lineageModal').classList.remove('hidden');
+      const body = document.getElementById('lineageModalBody');
+      body.innerHTML = '<p class="text-slate-400">Rastreando árvore de proveniência...</p>';
+      try {
+        const res = await fetch('/api/v1/lineage/fact_decisions');
+        if (res.ok) {
+          const data = await res.json();
+          let html = `
+            <div class="bg-slate-950 p-3 rounded-lg border border-slate-800">
+              <div class="flex items-center justify-between">
+                <span class="font-semibold text-slate-200">Entidade: <code class="text-blue-400">${data.target_entity}</code></span>
+                <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-950 text-emerald-300 border border-emerald-700">AUDITORIA: ${data.validation_status}</span>
+              </div>
+              <p class="text-[11px] text-slate-500 mt-1">Traced at: ${data.traced_at}</p>
+            </div>
+            <div class="space-y-2 mt-3">
+          `;
+          data.lineage_nodes.reverse().forEach(n => {
+            html += `
+              <div class="flex items-start gap-3 p-2.5 rounded-lg bg-slate-800/40 border border-slate-800">
+                <div class="mt-0.5 text-blue-400 font-mono text-xs">●</div>
+                <div class="flex-1">
+                  <div class="flex items-center justify-between">
+                    <span class="font-semibold text-slate-200 text-xs">${n.name} <span class="text-[10px] text-slate-400">(${n.layer})</span></span>
+                    <span class="text-[10px] text-slate-500">${n.version}</span>
+                  </div>
+                  <p class="text-[11px] text-slate-400">${n.description}</p>
+                  ${n.hash_or_checksum ? `<p class="text-[10px] font-mono text-emerald-400/80 mt-1">SHA256: ${n.hash_or_checksum.substring(0, 24)}...</p>` : ''}
+                </div>
+              </div>
+            `;
+          });
+          html += '</div>';
+          body.innerHTML = html;
+        }
+      } catch (err) {
+        body.innerHTML = `<p class="text-red-400">Erro ao carregar linhagem: ${err}</p>`;
+      }
+    }
+
+    function closeLineageModal() {
+      document.getElementById('lineageModal').classList.add('hidden');
+    }
+
+    window.addEventListener('DOMContentLoaded', loadDashboard);
+  </script>
+</body>
+</html>

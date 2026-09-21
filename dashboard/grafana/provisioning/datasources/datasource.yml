@@ -1,0 +1,12 @@
+apiVersion: 1
+
+datasources:
+  - name: STF-API
+    type: yesoreyeram-infinity-datasource
+    access: proxy
+    isDefault: true
+    jsonData:
+      datasourceMode: "basic"
+      authType: "none"
+      tlsSkipVerify: true
+    editable: true

@@ -2,8 +2,10 @@
 
 from __future__ import annotations
 
+from pathlib import Path
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import HTMLResponse
 
 from api.routes.analytics import router as analytics_router
 from api.routes.decisions import router as decisions_router
@@ -45,6 +47,7 @@ def root():
     return {
         "title": "STF Transparency Platform API",
         "version": "0.1.0",
+        "dashboard_url": "/dashboard",
         "docs_url": "/docs",
         "redoc_url": "/redoc",
         "health_url": "/health",
@@ -59,6 +62,15 @@ def root():
         },
         "description": "Open-source data engineering and analytical platform for Brazilian Supreme Court (STF) public data.",
     }
+
+
+@app.get("/dashboard", response_class=HTMLResponse, tags=["Dashboard"])
+def get_dashboard():
+    """Serves the interactive STF Analytics & Transparency Dashboard."""
+    template_path = Path(__file__).resolve().parent / "templates" / "dashboard.html"
+    if not template_path.exists():
+        return HTMLResponse("<h1>Dashboard template not found</h1>", status_code=500)
+    return HTMLResponse(content=template_path.read_text(encoding="utf-8"))
 
 
 @app.get("/health", tags=["Health"])

@@ -1,4 +1,4 @@
-.PHONY: help install ingest pipeline quality api test lint clean
+.PHONY: help install ingest pipeline quality api report grafana test lint clean
 
 PYTHON = .venv/bin/python
 PIP = .venv/bin/pip
@@ -12,7 +12,9 @@ help:
 	@echo "make ingest     : Ingest raw datasets from STF (sample or live)"
 	@echo "make pipeline   : Run full Bronze -> Silver -> Quality -> Gold pipeline"
 	@echo "make quality    : Run automated data quality assertion checks"
+	@echo "make report     : Generate executive statistical analysis report"
 	@echo "make api        : Launch FastAPI service on http://localhost:8000"
+	@echo "make grafana    : Start API and Grafana via Docker Compose"
 	@echo "make test       : Run test suite with pytest"
 	@echo "make clean      : Remove cache and temporary test files"
 
@@ -30,8 +32,14 @@ pipeline:
 quality:
 	$(PYTHON) -m quality.runner
 
+report:
+	$(PYTHON) analytics/run_analysis.py
+
 api:
 	$(UVICORN) api.main:app --host 0.0.0.0 --port 8000 --reload
+
+grafana:
+	docker compose up -d
 
 test:
 	$(PYTEST) tests/ -v

@@ -14,14 +14,22 @@ services:
       - PYTHONUNBUFFERED=1
     restart: unless-stopped
 
-  # Optional local Grafana service for dashboards
+  # Pre-configured Grafana service for out-of-the-box dashboards
   grafana:
     image: grafana/grafana-oss:latest
     container_name: stf_transparency_grafana
     ports:
       - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_AUTH_ANONYMOUS_ENABLED=true
+      - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
+      - GF_INSTALL_PLUGINS=yesoreyeram-infinity-datasource
     volumes:
       - grafana_storage:/var/lib/grafana
+      - ./dashboard/grafana/provisioning:/etc/grafana/provisioning:ro
+      - ./dashboard/grafana/dashboards:/etc/grafana/dashboards:ro
     depends_on:
       - api
     restart: unless-stopped

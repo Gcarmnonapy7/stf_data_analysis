@@ -1,0 +1,11 @@
+apiVersion: 1
+
+providers:
+  - name: 'STF Transparency Dashboards'
+    orgId: 1
+    folder: 'STF Analytics'
+    type: file
+    disableDeletion: false
+    editable: true
+    options:
+      path: /etc/grafana/dashboards
