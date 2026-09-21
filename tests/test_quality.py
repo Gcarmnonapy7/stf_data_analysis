@@ -39,3 +39,4 @@ def test_lineage_engine():
 
     md = trace.to_markdown()
     assert "Data Lineage for `fact_decisions`" in md
+

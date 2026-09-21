@@ -72,3 +72,4 @@ FROM fact_decisions f
 JOIN fact_processes p ON f.process_id = p.process_id
 GROUP BY p.classe_sigla
 ORDER BY media_dias_ate_decisao DESC;
+

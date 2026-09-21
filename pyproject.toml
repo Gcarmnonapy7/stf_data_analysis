@@ -36,3 +36,4 @@ include = ["ingestion*", "pipelines*", "transformations*", "quality*", "analytic
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 pythonpath = ["."]
+

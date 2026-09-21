@@ -68,3 +68,4 @@ class LineageResponse(BaseModel):
     validation_status: str
     lineage_nodes: List[LineageNodeItem]
     markdown_lineage: str
+

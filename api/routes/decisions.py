@@ -58,3 +58,4 @@ def list_decisions(
     items = client.query(data_sql, params + [limit, offset])
 
     return PaginatedResponse(total=total, limit=limit, offset=offset, items=items)
+

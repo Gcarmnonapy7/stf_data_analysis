@@ -49,3 +49,4 @@ def test_clean_decisions(raw_data_dir):
         assert set(df["categoria_decisao"].unique().to_list()).issubset(
             {"MONOCRATICA", "COLEGIADA", "PRESIDENCIA"}
         )
+

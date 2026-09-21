@@ -246,3 +246,4 @@ def generate_fixtures(
         "recursos": rec_file,
         "repercussao_geral": rg_file,
     }
+

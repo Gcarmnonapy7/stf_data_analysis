@@ -171,3 +171,4 @@ if __name__ == "__main__":
     builder = GoldModelBuilder()
     models = builder.build_all_models()
     print("Gold dimensional models built successfully in Parquet and DuckDB.")
+

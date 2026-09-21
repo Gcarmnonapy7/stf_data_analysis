@@ -107,3 +107,4 @@ A consumer can query `/api/v1/lineage/{entity_name}` and retrieve:
 - Cryptographic SHA-256 hash of raw input
 - Transformation code version
 - Data quality verification audit status (`PASS`/`FAIL`)
+

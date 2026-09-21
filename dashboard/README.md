@@ -33,3 +33,4 @@ The **STF Transparency Platform** is designed to connect seamlessly to open-sour
    duckdb:////absolute/path/to/data/curated/stf_warehouse.duckdb
    ```
 2. Explore datasets (`fact_processes`, `fact_decisions`, `dim_date`, `dim_origin`).
+

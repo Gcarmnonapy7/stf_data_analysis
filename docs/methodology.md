@@ -17,3 +17,4 @@ The primary goal of the **STF Transparency Platform** is to make public judicial
 - **Active Backlog**: Count of processes where `situacao` equals `'EM TRAMITAÇÃO'`.
 - **Duration to Decision**: Calendar days elapsed between `data_distribuicao` and `data_decisao`.
 - **Monocracy Ratio**: Ratio of decisions rendered by a single justice (`MONOCRATICA`) versus collegiate decisions rendered by chambers or the plenary bench (`COLEGIADA`).
+

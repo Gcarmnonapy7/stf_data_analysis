@@ -59,3 +59,4 @@ Calendar table providing dates, Portuguese month and weekday names, quarters, an
 
 ### `dim_origin`
 Maps Brazilian states (`uf_origem`) to geographic macro-regions (`Sul`, `Sudeste`, `Centro-Oeste`, `Nordeste`, `Norte`).
+

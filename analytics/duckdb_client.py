@@ -61,3 +61,4 @@ class STFLakehouseClient:
                 [table_name],
             ).fetchone()
             return bool(res and res[0] > 0)
+

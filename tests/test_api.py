@@ -8,6 +8,15 @@ from api.main import app
 client = TestClient(app)
 
 
+def test_root():
+    response = client.get("/")
+    assert response.status_code == 200
+    data = response.json()
+    assert "docs_url" in data
+    assert data["docs_url"] == "/docs"
+    assert "endpoints" in data
+
+
 def test_healthcheck():
     response = client.get("/health")
     assert response.status_code == 200
@@ -54,3 +63,4 @@ def test_get_lineage():
     assert data["target_entity"] == "fact_decisions"
     assert "lineage_nodes" in data
     assert len(data["lineage_nodes"]) >= 3
+

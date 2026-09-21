@@ -80,3 +80,4 @@ if __name__ == "__main__":
     if raw_csv.exists():
         cleaned = clean_processes(raw_csv, silver_parquet)
         print(f"Cleaned {cleaned.height} processos -> {silver_parquet}")
+

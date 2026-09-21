@@ -81,3 +81,4 @@ if __name__ == "__main__":
     if raw_csv.exists():
         cleaned = clean_decisions(raw_csv, silver_parquet)
         print(f"Cleaned {cleaned.height} decisões -> {silver_parquet}")
+

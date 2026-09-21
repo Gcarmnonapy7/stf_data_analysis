@@ -39,3 +39,4 @@ def get_entity_lineage(entity_name: str):
         )
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+

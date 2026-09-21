@@ -51,3 +51,4 @@ def test_fixtures_generation():
         for name, p in files.items():
             assert p.exists()
             assert p.stat().st_size > 0
+

@@ -81,3 +81,4 @@ def get_top_classes():
         LIMIT 10
     """
     return client.query(sql)
+

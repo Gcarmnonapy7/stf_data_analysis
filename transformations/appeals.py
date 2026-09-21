@@ -82,3 +82,4 @@ def clean_repercussao_geral(
         df.write_parquet(out_p, compression="zstd")
 
     return df
+
