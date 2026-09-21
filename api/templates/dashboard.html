@@ -100,7 +100,7 @@
         </div>
       </div>
 
-      <div class="bg-slate-800/60 border border-slate-700/60 rounded-xl p-5 shadow-sm">
+      <div class="bg-slate-800/60 border border-slate-700/60 rounded-xl p-5 shadow-sm sm:col-span-2 lg:col-span-1">
         <div class="flex items-center justify-between">
           <span class="text-xs font-medium uppercase tracking-wider text-slate-400">Janela Auditada</span>
           <span class="p-2 rounded-lg bg-emerald-500/10 text-emerald-400"><i class="fa-solid fa-calendar-check"></i></span>
@@ -222,7 +222,7 @@
             </h2>
             <p class="text-xs text-slate-400">Acompanhamento individual de casos em tramitação, decisões e tempo médio de julgamento</p>
           </div>
-          <span class="text-xs text-slate-400">Clique em 'Filtrar' para isolar os processos do relator</span>
+          <span class="text-xs text-slate-400">Clique em 'Ver Casos' para isolar os processos do relator</span>
         </div>
 
         <div class="overflow-x-auto rounded-lg border border-slate-700/60">
@@ -276,12 +276,12 @@
         <table class="min-w-full divide-y divide-slate-700 text-left text-xs">
           <thead class="bg-slate-900/80 text-slate-300 font-semibold">
             <tr>
-              <th class="px-4 py-3">ID Processo</th>
-              <th class="px-4 py-3">Classe</th>
-              <th class="px-4 py-3">UF</th>
-              <th class="px-4 py-3">Relator</th>
-              <th class="px-4 py-3">Data Distribuição</th>
-              <th class="px-4 py-3">Situação</th>
+              <th class="px-4 py-3 text-left">ID Processo</th>
+              <th class="px-4 py-3 text-left">Classe</th>
+              <th class="px-4 py-3 text-center">UF</th>
+              <th class="px-4 py-3 text-left">Relator</th>
+              <th class="px-4 py-3 text-center">Data Distribuição</th>
+              <th class="px-4 py-3 text-center">Situação</th>
             </tr>
           </thead>
           <tbody id="processesTableBody" class="divide-y divide-slate-800 bg-slate-900/30 text-slate-300">
@@ -578,9 +578,11 @@
       tbody.innerHTML = judges.map(j => {
         return `
           <tr class="hover:bg-slate-800/40 transition">
-            <td class="px-4 py-3 font-medium text-slate-200 flex items-center gap-2">
-              <span class="w-6 h-6 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center text-[11px] text-purple-400">⚖️</span>
-              <span>${j.relator}</span>
+            <td class="px-4 py-3 text-left font-medium text-slate-200">
+              <div class="flex items-center gap-2">
+                <span class="w-6 h-6 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center text-[11px] text-purple-400 shrink-0">⚖️</span>
+                <span class="whitespace-nowrap font-medium text-slate-200">${j.relator}</span>
+              </div>
             </td>
             <td class="px-4 py-3 text-right font-semibold text-white">${j.total_cases}</td>
             <td class="px-4 py-3 text-right text-amber-400 font-medium">${j.active_cases}</td>
@@ -641,12 +643,12 @@
         const badgeColor = isEmTramitacao ? 'bg-amber-900/60 text-amber-300 border-amber-700' : 'bg-emerald-900/60 text-emerald-300 border-emerald-700';
         return `
           <tr class="hover:bg-slate-800/40 transition">
-            <td class="px-4 py-2.5 font-medium text-slate-200">${p.process_id}</td>
-            <td class="px-4 py-2.5"><span class="px-2 py-0.5 rounded text-[11px] font-semibold bg-slate-800 text-slate-300">${p.classe_sigla}</span></td>
-            <td class="px-4 py-2.5 text-slate-400 font-mono">${p.uf_origem || '-'}</td>
-            <td class="px-4 py-2.5 text-slate-300">${p.relator || '-'}</td>
-            <td class="px-4 py-2.5 text-slate-400">${p.data_distribuicao || '-'}</td>
-            <td class="px-4 py-2.5"><span class="px-2 py-0.5 rounded-full text-[10px] font-medium border ${badgeColor}">${p.situacao}</span></td>
+            <td class="px-4 py-2.5 text-left font-mono font-medium text-slate-200">${p.process_id}</td>
+            <td class="px-4 py-2.5 text-left"><span class="px-2 py-0.5 rounded text-[11px] font-semibold bg-slate-800 text-slate-300">${p.classe_sigla}</span></td>
+            <td class="px-4 py-2.5 text-center text-slate-400 font-mono">${p.uf_origem || '-'}</td>
+            <td class="px-4 py-2.5 text-left text-slate-300">${p.relator || '-'}</td>
+            <td class="px-4 py-2.5 text-center text-slate-400">${p.data_distribuicao || '-'}</td>
+            <td class="px-4 py-2.5 text-center"><span class="px-2 py-0.5 rounded-full text-[10px] font-medium border ${badgeColor}">${p.situacao}</span></td>
           </tr>
         `;
       }).join('');
