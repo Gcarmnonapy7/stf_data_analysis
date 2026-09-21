@@ -56,59 +56,74 @@
 
     <!-- KPI Metric Cards Grid (5 Cards) -->
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
-      <div class="bg-slate-800/60 border border-slate-700/60 rounded-xl p-5 shadow-sm">
-        <div class="flex items-center justify-between">
-          <span class="text-xs font-medium uppercase tracking-wider text-slate-400">Total de Processos</span>
-          <span class="p-2 rounded-lg bg-blue-500/10 text-blue-400"><i class="fa-solid fa-folder-tree"></i></span>
+      <div class="bg-slate-800/60 border border-slate-700/60 rounded-xl p-5 shadow-sm flex flex-col justify-between">
+        <div>
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-medium uppercase tracking-wider text-slate-400">Total de Processos</span>
+            <span class="p-2 rounded-lg bg-blue-500/10 text-blue-400"><i class="fa-solid fa-folder-tree"></i></span>
+          </div>
+          <div class="mt-2 flex items-baseline gap-2">
+            <span id="kpi-processes" class="text-2xl font-bold text-white tracking-tight">--</span>
+            <span class="text-[11px] text-emerald-400">✓ Ingeridos</span>
+          </div>
         </div>
-        <div class="mt-2 flex items-baseline gap-2">
-          <span id="kpi-processes" class="text-2xl font-bold text-white tracking-tight">--</span>
-          <span class="text-[11px] text-emerald-400">✓ Ingeridos</span>
-        </div>
+        <p class="text-[11px] text-slate-400 mt-3 border-t border-slate-700/50 pt-2">Ações originárias e recursos extraordinários distribuídos aos gabinetes.</p>
       </div>
 
-      <div class="bg-slate-800/60 border border-slate-700/60 rounded-xl p-5 shadow-sm">
-        <div class="flex items-center justify-between">
-          <span class="text-xs font-medium uppercase tracking-wider text-slate-400">Decisões Proferidas</span>
-          <span class="p-2 rounded-lg bg-emerald-500/10 text-emerald-400"><i class="fa-solid fa-gavel"></i></span>
+      <div class="bg-slate-800/60 border border-slate-700/60 rounded-xl p-5 shadow-sm flex flex-col justify-between">
+        <div>
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-medium uppercase tracking-wider text-slate-400">Decisões Proferidas</span>
+            <span class="p-2 rounded-lg bg-emerald-500/10 text-emerald-400"><i class="fa-solid fa-gavel"></i></span>
+          </div>
+          <div class="mt-2 flex items-baseline gap-2">
+            <span id="kpi-decisions" class="text-2xl font-bold text-white tracking-tight">--</span>
+            <span class="text-[11px] text-emerald-400">✓ Normalizadas</span>
+          </div>
         </div>
-        <div class="mt-2 flex items-baseline gap-2">
-          <span id="kpi-decisions" class="text-2xl font-bold text-white tracking-tight">--</span>
-          <span class="text-[11px] text-emerald-400">✓ Normalizadas</span>
-        </div>
+        <p class="text-[11px] text-slate-400 mt-3 border-t border-slate-700/50 pt-2">Julgamentos e despachos decisórios proferidos (monocráticos e colegiados).</p>
       </div>
 
-      <div class="bg-slate-800/60 border border-slate-700/60 rounded-xl p-5 shadow-sm">
-        <div class="flex items-center justify-between">
-          <span class="text-xs font-medium uppercase tracking-wider text-slate-400">Acervo em Tramitação</span>
-          <span class="p-2 rounded-lg bg-amber-500/10 text-amber-400"><i class="fa-solid fa-hourglass-half"></i></span>
+      <div class="bg-slate-800/60 border border-slate-700/60 rounded-xl p-5 shadow-sm flex flex-col justify-between">
+        <div>
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-medium uppercase tracking-wider text-slate-400">Acervo em Tramitação</span>
+            <span class="p-2 rounded-lg bg-amber-500/10 text-amber-400"><i class="fa-solid fa-hourglass-half"></i></span>
+          </div>
+          <div class="mt-2 flex items-baseline gap-2">
+            <span id="kpi-active" class="text-2xl font-bold text-amber-400 tracking-tight">--</span>
+            <span class="text-[11px] text-slate-400">casos ativos</span>
+          </div>
         </div>
-        <div class="mt-2 flex items-baseline gap-2">
-          <span id="kpi-active" class="text-2xl font-bold text-amber-400 tracking-tight">--</span>
-          <span class="text-[11px] text-slate-400">casos ativos</span>
-        </div>
+        <p class="text-[11px] text-slate-400 mt-3 border-t border-slate-700/50 pt-2">Processos ativos no Tribunal aguardando instrução, parecer ou pauta.</p>
       </div>
 
-      <div class="bg-slate-800/60 border border-slate-700/60 rounded-xl p-5 shadow-sm">
-        <div class="flex items-center justify-between">
-          <span class="text-xs font-medium uppercase tracking-wider text-slate-400">Ministros do STF</span>
-          <span class="p-2 rounded-lg bg-purple-500/10 text-purple-400"><i class="fa-solid fa-landmark"></i></span>
+      <div class="bg-slate-800/60 border border-slate-700/60 rounded-xl p-5 shadow-sm flex flex-col justify-between">
+        <div>
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-medium uppercase tracking-wider text-slate-400">Ministros do STF</span>
+            <span class="p-2 rounded-lg bg-purple-500/10 text-purple-400"><i class="fa-solid fa-landmark"></i></span>
+          </div>
+          <div class="mt-2 flex items-baseline gap-2">
+            <span id="kpi-judges" class="text-2xl font-bold text-purple-400 tracking-tight">11</span>
+            <span class="text-[11px] text-purple-300">Corte Completa</span>
+          </div>
         </div>
-        <div class="mt-2 flex items-baseline gap-2">
-          <span id="kpi-judges" class="text-2xl font-bold text-purple-400 tracking-tight">11</span>
-          <span class="text-[11px] text-purple-300">Corte Completa</span>
-        </div>
+        <p class="text-[11px] text-slate-400 mt-3 border-t border-slate-700/50 pt-2">Composição constitucional plena com 11 gabinetes de ministros relatores.</p>
       </div>
 
-      <div class="bg-slate-800/60 border border-slate-700/60 rounded-xl p-5 shadow-sm sm:col-span-2 lg:col-span-1">
-        <div class="flex items-center justify-between">
-          <span class="text-xs font-medium uppercase tracking-wider text-slate-400">Janela Auditada</span>
-          <span class="p-2 rounded-lg bg-emerald-500/10 text-emerald-400"><i class="fa-solid fa-calendar-check"></i></span>
+      <div class="bg-slate-800/60 border border-slate-700/60 rounded-xl p-5 shadow-sm sm:col-span-2 lg:col-span-1 flex flex-col justify-between">
+        <div>
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-medium uppercase tracking-wider text-slate-400">Janela Auditada</span>
+            <span class="p-2 rounded-lg bg-emerald-500/10 text-emerald-400"><i class="fa-solid fa-calendar-check"></i></span>
+          </div>
+          <div class="mt-2 flex items-baseline gap-2">
+            <span id="kpi-temporal" class="text-xl font-bold text-emerald-400 tracking-tight">2018 – 2026</span>
+            <span class="text-[11px] text-emerald-300">100% Validado</span>
+          </div>
         </div>
-        <div class="mt-2 flex items-baseline gap-2">
-          <span id="kpi-temporal" class="text-xl font-bold text-emerald-400 tracking-tight">2018 – 2026</span>
-          <span class="text-[11px] text-emerald-300">100% Validado</span>
-        </div>
+        <p class="text-[11px] text-slate-400 mt-3 border-t border-slate-700/50 pt-2">Série histórica auditada com integridade criptográfica no DuckDB Lakehouse.</p>
       </div>
     </div>
 
@@ -137,12 +152,17 @@
 
       <!-- Chart 1: Yearly Intake -->
       <div class="bg-slate-800/50 border border-slate-700/60 rounded-xl p-5 shadow-sm">
-        <div class="flex items-center justify-between mb-4">
-          <h2 class="text-sm font-semibold text-slate-200 flex items-center gap-2">
-            <i class="fa-solid fa-chart-column text-blue-400"></i>
-            Evolução Anual de Distribuição & Baixa (2018 – 2026)
-          </h2>
-          <span class="text-xs text-slate-400">Série Histórica</span>
+        <div class="mb-4">
+          <div class="flex items-center justify-between">
+            <h2 class="text-sm font-semibold text-slate-200 flex items-center gap-2">
+              <i class="fa-solid fa-chart-column text-blue-400"></i>
+              Evolução Anual de Distribuição & Baixa (2018 – 2026)
+            </h2>
+            <span class="text-xs text-slate-400 font-mono">Série Histórica</span>
+          </div>
+          <p class="text-[11px] text-slate-400 mt-1">
+            <strong class="text-slate-300">Entrada vs. Saída:</strong> Compara o volume de processos distribuídos (ingressados) com os casos arquivados definitivamente (baixados/julgados).
+          </p>
         </div>
         <div class="h-64">
           <canvas id="yearlyChart"></canvas>
@@ -151,12 +171,17 @@
 
       <!-- Chart 2: Monocratic vs Collegiate -->
       <div class="bg-slate-800/50 border border-slate-700/60 rounded-xl p-5 shadow-sm">
-        <div class="flex items-center justify-between mb-4">
-          <h2 class="text-sm font-semibold text-slate-200 flex items-center gap-2">
-            <i class="fa-solid fa-chart-pie text-emerald-400"></i>
-            Perfil Decisório: Monocrática vs. Colegiada
-          </h2>
-          <span class="text-xs text-slate-400">Formato da Decisão</span>
+        <div class="mb-4">
+          <div class="flex items-center justify-between">
+            <h2 class="text-sm font-semibold text-slate-200 flex items-center gap-2">
+              <i class="fa-solid fa-chart-pie text-emerald-400"></i>
+              Perfil Decisório: Monocrática vs. Colegiada
+            </h2>
+            <span class="text-xs text-slate-400 font-mono">Formato</span>
+          </div>
+          <p class="text-[11px] text-slate-400 mt-1">
+            <strong class="text-slate-300">Monocrática:</strong> decisão individual de um Ministro. <strong class="text-slate-300">Colegiada:</strong> acórdãos votados conjuntamente pelas Turmas ou Plenário.
+          </p>
         </div>
         <div class="h-64 flex items-center justify-center">
           <canvas id="categoryChart"></canvas>
@@ -165,12 +190,17 @@
 
       <!-- Chart 3: Top Classes -->
       <div class="bg-slate-800/50 border border-slate-700/60 rounded-xl p-5 shadow-sm">
-        <div class="flex items-center justify-between mb-4">
-          <h2 class="text-sm font-semibold text-slate-200 flex items-center gap-2">
-            <i class="fa-solid fa-scale-balanced text-amber-400"></i>
-            Top 10 Classes Processuais
-          </h2>
-          <span class="text-xs text-slate-400">Volume</span>
+        <div class="mb-4">
+          <div class="flex items-center justify-between">
+            <h2 class="text-sm font-semibold text-slate-200 flex items-center gap-2">
+              <i class="fa-solid fa-scale-balanced text-amber-400"></i>
+              Top 10 Classes Processuais
+            </h2>
+            <span class="text-xs text-slate-400 font-mono">Volume</span>
+          </div>
+          <p class="text-[11px] text-slate-400 mt-1">
+            <strong class="text-slate-300">Classes:</strong> HC (liberdade), RE/ARE (recursos excepcionais), ADI/ADPF (controle de constitucionalidade), Rcl (reclamação).
+          </p>
         </div>
         <div class="h-64">
           <canvas id="classesChart"></canvas>
@@ -179,12 +209,17 @@
 
       <!-- Chart 4: Cases by Region -->
       <div class="bg-slate-800/50 border border-slate-700/60 rounded-xl p-5 shadow-sm">
-        <div class="flex items-center justify-between mb-4">
-          <h2 class="text-sm font-semibold text-slate-200 flex items-center gap-2">
-            <i class="fa-solid fa-earth-americas text-purple-400"></i>
-            Distribuição por Macro-Região
-          </h2>
-          <span class="text-xs text-slate-400">Origem Federativa</span>
+        <div class="mb-4">
+          <div class="flex items-center justify-between">
+            <h2 class="text-sm font-semibold text-slate-200 flex items-center gap-2">
+              <i class="fa-solid fa-earth-americas text-purple-400"></i>
+              Distribuição por Macro-Região
+            </h2>
+            <span class="text-xs text-slate-400 font-mono">Origem</span>
+          </div>
+          <p class="text-[11px] text-slate-400 mt-1">
+            <strong class="text-slate-300">Pacto Federativo:</strong> Identifica a região geográfica e os tribunais estaduais/federais de procedência dos recursos.
+          </p>
         </div>
         <div class="h-64">
           <canvas id="regionChart"></canvas>
@@ -197,15 +232,17 @@
     <div class="space-y-6">
       <!-- Judges Chart -->
       <div class="bg-slate-800/50 border border-slate-700/60 rounded-xl p-5 shadow-sm">
-        <div class="flex items-center justify-between mb-4">
-          <div>
+        <div class="mb-4">
+          <div class="flex items-center justify-between">
             <h2 class="text-sm font-semibold text-slate-200 flex items-center gap-2">
               <i class="fa-solid fa-scale-unbalanced text-purple-400"></i>
               Distribuição de Acervo por Ministro (Caseload)
             </h2>
-            <p class="text-xs text-slate-400">Comparativo de processos atribuídos vs. processos julgados e baixados</p>
+            <span class="text-xs text-purple-300 font-mono bg-purple-950/60 px-2.5 py-1 rounded border border-purple-800">11 Gabinetes</span>
           </div>
-          <span class="text-xs text-purple-300 font-mono bg-purple-950/60 px-2.5 py-1 rounded border border-purple-800">11 Gabinetes</span>
+          <p class="text-[11px] text-slate-400 mt-1">
+            <strong class="text-slate-300">Carga de Trabalho (Caseload):</strong> Proporção de processos distribuídos a cada gabinete, comparando o acervo ativo (em tramitação) e a capacidade resolutiva (baixados/julgados).
+          </p>
         </div>
         <div class="h-72">
           <canvas id="judgesChart"></canvas>
@@ -214,29 +251,31 @@
 
       <!-- Judges Detailed Table -->
       <div class="bg-slate-800/50 border border-slate-700/60 rounded-xl p-5 shadow-sm">
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4">
-          <div>
+        <div class="mb-4">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
             <h2 class="text-sm font-semibold text-slate-200 flex items-center gap-2">
               <i class="fa-solid fa-users-gear text-purple-400"></i>
               Detalhamento de Produtividade dos Gabinetes
             </h2>
-            <p class="text-xs text-slate-400">Acompanhamento individual de casos em tramitação, decisões e tempo médio de julgamento</p>
+            <span class="text-xs text-slate-400">Clique em 'Ver Casos' para isolar os processos do relator</span>
           </div>
-          <span class="text-xs text-slate-400">Clique em 'Ver Casos' para isolar os processos do relator</span>
+          <p class="text-[11px] text-slate-400 mt-1">
+            <strong class="text-slate-300">Ministro Relator:</strong> Magistrado sorteado responsável pela instrução e voto condutor. <strong class="text-slate-300">Lead Time Médio:</strong> Tempo médio (em dias) decorrido entre a distribuição inicial e a publicação da decisão.
+          </p>
         </div>
 
         <div class="overflow-x-auto rounded-lg border border-slate-700/60">
           <table class="min-w-full divide-y divide-slate-700 text-left text-xs">
             <thead class="bg-slate-900/80 text-slate-300 font-semibold">
               <tr>
-                <th class="px-4 py-3">Ministro(a) Relator(a)</th>
-                <th class="px-4 py-3 text-right">Total Casos</th>
-                <th class="px-4 py-3 text-right">Em Tramitação</th>
-                <th class="px-4 py-3 text-right">Baixados / Julgados</th>
-                <th class="px-4 py-3 text-right">Decisões Proferidas</th>
-                <th class="px-4 py-3 text-center">% Acervo STF</th>
-                <th class="px-4 py-3 text-right">Lead Time Médio</th>
-                <th class="px-4 py-3 text-center">Ações</th>
+                <th class="px-4 py-3" title="Ministro(a) relator(a) titular do gabinete no STF">Ministro(a) Relator(a)</th>
+                <th class="px-4 py-3 text-right" title="Volume total acumulado de processos recebidos na série histórica">Total Casos</th>
+                <th class="px-4 py-3 text-right text-amber-400" title="Processos ativos atualmente aguardando julgamento, parecer ou despacho">Em Tramitação</th>
+                <th class="px-4 py-3 text-right text-emerald-400" title="Processos com julgamento finalizado ou remetidos à origem após trânsito em julgado">Baixados / Julgados</th>
+                <th class="px-4 py-3 text-right" title="Total de decisões proferidas (monocráticas e acórdãos colegiados)">Decisões Proferidas</th>
+                <th class="px-4 py-3 text-center" title="Participação percentual do gabinete no acervo total do tribunal">% Acervo STF</th>
+                <th class="px-4 py-3 text-right" title="Tempo médio decorrido (em dias) entre a data de distribuição e a publicação da decisão judicial">Lead Time Médio</th>
+                <th class="px-4 py-3 text-center" title="Filtrar tabela inferior com os processos deste gabinete">Ações</th>
               </tr>
             </thead>
             <tbody id="judgesTableBody" class="divide-y divide-slate-800 bg-slate-900/30 text-slate-300">
@@ -249,6 +288,62 @@
       </div>
     </div>
 
+    <!-- Educational Guide: Glossário & Conceitos Jurídicos Fundamentais -->
+    <div class="bg-slate-800/40 border border-slate-700/60 rounded-xl p-5 shadow-sm space-y-4">
+      <div class="flex items-center justify-between border-b border-slate-700/60 pb-3">
+        <div class="flex items-center gap-2">
+          <span class="p-1.5 rounded-lg bg-indigo-500/10 text-indigo-400"><i class="fa-solid fa-book-open"></i></span>
+          <div>
+            <h2 class="text-sm font-semibold text-slate-200">Guia Rápido: Conceitos Jurídicos & Transparência do STF</h2>
+            <p class="text-[11px] text-slate-400">Terminologias do rito processual do Supremo Tribunal Federal para cidadãos, pesquisadores e analistas</p>
+          </div>
+        </div>
+        <span class="text-xs text-indigo-300 font-mono bg-indigo-950/60 px-2.5 py-1 rounded border border-indigo-800">Glossário Aberto</span>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 pt-1">
+        <div class="bg-slate-900/50 border border-slate-800 rounded-lg p-3.5 space-y-1.5">
+          <div class="flex items-center gap-2 text-indigo-400 text-xs font-semibold">
+            <i class="fa-solid fa-gavel"></i>
+            <span>Ministro Relator</span>
+          </div>
+          <p class="text-[11px] text-slate-400 leading-relaxed">
+            Magistrado sorteado para instruir o processo, despachar urgências e elaborar o voto condutor. O relator pode decidir monocraticamente ou submeter a matéria ao colegiado.
+          </p>
+        </div>
+
+        <div class="bg-slate-900/50 border border-slate-800 rounded-lg p-3.5 space-y-1.5">
+          <div class="flex items-center gap-2 text-emerald-400 text-xs font-semibold">
+            <i class="fa-solid fa-scale-balanced"></i>
+            <span>Monocrática vs. Colegiada</span>
+          </div>
+          <p class="text-[11px] text-slate-400 leading-relaxed">
+            <strong>Monocrática:</strong> decisão individual célere com base em jurisprudência pacífica. <strong>Colegiada:</strong> acórdão debatido e votado pela Primeira Turma, Segunda Turma ou Plenário.
+          </p>
+        </div>
+
+        <div class="bg-slate-900/50 border border-slate-800 rounded-lg p-3.5 space-y-1.5">
+          <div class="flex items-center gap-2 text-amber-400 text-xs font-semibold">
+            <i class="fa-solid fa-clock-rotate-left"></i>
+            <span>Tramitação vs. Baixa</span>
+          </div>
+          <p class="text-[11px] text-slate-400 leading-relaxed">
+            <strong>Tramitando:</strong> caso ativo no tribunal aguardando relatório, pauta ou cumprimento. <strong>Baixado:</strong> processo encerrado definitivamente com trânsito em julgado ou remessa à origem.
+          </p>
+        </div>
+
+        <div class="bg-slate-900/50 border border-slate-800 rounded-lg p-3.5 space-y-1.5">
+          <div class="flex items-center gap-2 text-blue-400 text-xs font-semibold">
+            <i class="fa-solid fa-shield-halved"></i>
+            <span>Linhagem & Auditoria</span>
+          </div>
+          <p class="text-[11px] text-slate-400 leading-relaxed">
+            Dados extraídos das bases oficiais da Corte Aberta e CNJ, estruturados no DuckDB Lakehouse e validados contra anomalias na série histórica 2018–2026.
+          </p>
+        </div>
+      </div>
+    </div>
+
     <!-- Section 3: Interactive Case Explorer Table -->
     <div id="casesSection" class="bg-slate-800/50 border border-slate-700/60 rounded-xl p-5 shadow-sm">
       <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4">
@@ -257,7 +352,7 @@
             <i class="fa-solid fa-list-check text-blue-400"></i>
             Explorador de Processos Judiciais
           </h2>
-          <p class="text-xs text-slate-400" id="tableSubtitle">Amostra em tempo real extraída do DuckDB Lakehouse</p>
+          <p class="text-xs text-slate-400" id="tableSubtitle">Consulta analítica em tempo real do acervo processual. Filtre por relator, classe processual ou UF de origem.</p>
         </div>
         <div class="flex flex-wrap items-center gap-2">
           <!-- Filter by Judge -->
@@ -276,12 +371,12 @@
         <table class="min-w-full divide-y divide-slate-700 text-left text-xs">
           <thead class="bg-slate-900/80 text-slate-300 font-semibold">
             <tr>
-              <th class="px-4 py-3 text-left">ID Processo</th>
-              <th class="px-4 py-3 text-left">Classe</th>
-              <th class="px-4 py-3 text-center">UF</th>
-              <th class="px-4 py-3 text-left">Relator</th>
-              <th class="px-4 py-3 text-center">Data Distribuição</th>
-              <th class="px-4 py-3 text-center">Situação</th>
+              <th class="px-4 py-3 text-left" title="Número único de identificação e autuação do processo no STF">ID Processo</th>
+              <th class="px-4 py-3 text-left" title="Tipo ou classe processual jurídica (e.g. Habeas Corpus, Recurso Extraordinário)">Classe</th>
+              <th class="px-4 py-3 text-center" title="Unidade Federativa (Estado) de procedência da ação">UF</th>
+              <th class="px-4 py-3 text-left" title="Ministro(a) relator(a) responsável pelo processo">Relator</th>
+              <th class="px-4 py-3 text-center" title="Data em que o processo foi distribuído ao relator no STF">Data Distribuição</th>
+              <th class="px-4 py-3 text-center" title="Situação processual atual (Em Tramitação ou Baixado)">Situação</th>
             </tr>
           </thead>
           <tbody id="processesTableBody" class="divide-y divide-slate-800 bg-slate-900/30 text-slate-300">
