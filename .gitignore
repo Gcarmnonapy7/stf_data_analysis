@@ -44,3 +44,6 @@ data/raw/*/*.csv
 # OS
 .DS_Store
 Thumbs.db
+
+# Legacy / temporary
+dashboard/grafana_old/
